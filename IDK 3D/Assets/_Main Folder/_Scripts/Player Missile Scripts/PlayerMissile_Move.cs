@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,17 +10,27 @@ public class PlayerMissile_Move : MonoBehaviour
 {
     [SerializeField] ParticleSystem MissileUp_FX;
     [SerializeField] ParticleSystem IdleSmoke_FX;
-    public GameObject MainCamera;
+    public Camera MainCamera;
 
-    bool ableToMove, touched;
+    bool ableToMove, hasTouched;
+    bool inFinishPhase;
 
     Rigidbody rb;
     Quaternion moveRotation;
     Vector3 MoveVec;
 
-    [SerializeField] float upAngle, downAngle;
-    [SerializeField] float missileSpeed, rotationSpeed;
+    [Header("------------- Rotation Angle Values -------------")]
+    [SerializeField] float upAngle;
+    [SerializeField] float downAngle;
+    [SerializeField] float straightAngle;
+    [Header("------------- Speed Values -------------")]
+    [SerializeField] float missileSpeed;
+    [SerializeField] float EndPhaseMissileSpeed;
+    [SerializeField] float rotationSpeed;
     [SerializeField] float fuelSpendValue;
+
+    [Header("//////// Level Values ////////")]
+    [SerializeField] float LevelEnd_Y_Value;
 
     // -------------- EVENTS --------------
     public static event Action onNoFuelLeft;
@@ -26,34 +38,47 @@ public class PlayerMissile_Move : MonoBehaviour
     private void Start()
     {
         onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
-        onNoFuelLeft += MainCamera.GetComponent<CameraMovement>().onPlayerEliminated;
-        ableToMove = true; touched = false;
+        onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
+        ableToMove = true; hasTouched = false; inFinishPhase = false;
         rb = GetComponent<Rigidbody>();
+
     }
 
     private void Update()
     {
-        if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+
+        if (!inFinishPhase)
         {
-            Touch touch = Input.GetTouch(0);
-            FuelManager.instance.SpendFuel(fuelSpendValue);
-
-            if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
+            if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated)
             {
-                StartRocketFunctions();
-            }
+                Touch touch = Input.GetTouch(0);
 
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                StopRocketFunctions();
-            }
+                if (GameManager.instance.gameState != GameManager.GameState.endPhase)
+                {
+                    FuelManager.instance.SpendFuel(fuelSpendValue);
+                }
 
-            else if (!FuelManager.instance.hasFuel() && ableToMove)
-            {
-                StopRocketFunctions();
-                onNoFuelLeft?.Invoke();
-                ableToMove = false;
+                if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
+                {
+                    StartRocketFunctions();
+                }
+
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    StopRocketFunctions();
+                }
+
+                else if (!FuelManager.instance.hasFuel() && ableToMove)
+                {
+                    StopRocketFunctions();
+                    onNoFuelLeft?.Invoke();
+                    ableToMove = false;
+                }
             }
+        }
+        else if (inFinishPhase)
+        {
+            //transform.rotation = moveRotation;
         }
     }
 
@@ -64,29 +89,50 @@ public class PlayerMissile_Move : MonoBehaviour
 
     void HandleMovement()
     {
-        if (touched)
+        if (hasTouched)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, rotationSpeed * Time.deltaTime);
             transform.position += MoveVec * missileSpeed * Time.deltaTime;
         }
     }
 
-    void StartRocketFunctions()
+    public void SetFinishPhaseValues()
     {
+        transform.DOMoveY(LevelEnd_Y_Value, .25f);
+        straightAngle = -90f;
+        missileSpeed = EndPhaseMissileSpeed;
+
+        moveRotation = Quaternion.Euler(0, 0, straightAngle);
+        MoveVec = new Vector3(1f, 0f, 0f);
+
+        inFinishPhase = true;
+
         MissileUp_FX.Play();
         IdleSmoke_FX.Stop();
-        touched = true;
-        rb.isKinematic = false;
-        moveRotation = Quaternion.Euler(0, 0, upAngle);
-        MoveVec = new Vector3(1f, 1f, 0);
+    }
+
+    void StartRocketFunctions()
+    {
+        if (GameManager.instance.gameState != GameManager.GameState.endPhase)
+        {
+            MissileUp_FX.Play();
+            IdleSmoke_FX.Stop();
+            hasTouched = true;
+            rb.isKinematic = false;
+            moveRotation = Quaternion.Euler(0, 0, upAngle);
+            MoveVec = new Vector3(1f, 1f, 0);
+        }
     }
 
     void StopRocketFunctions()
     {
-        MissileUp_FX.Stop();
-        IdleSmoke_FX.Play();
-        MoveVec = new Vector3(1f, -.75f, 0);
-        moveRotation = Quaternion.Euler(0, 0, downAngle);
+        if (GameManager.instance.gameState != GameManager.GameState.endPhase)
+        {
+            MissileUp_FX.Stop();
+            IdleSmoke_FX.Play();
+            MoveVec = new Vector3(1f, -.75f, 0);
+            moveRotation = Quaternion.Euler(0, 0, downAngle);
+        }
     }
 
     public void EliminatedStopMovement()

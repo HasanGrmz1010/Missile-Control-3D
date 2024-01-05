@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         switch (other.gameObject.layer)
         {
             case 6:// coin
+                UI_Manager.instance.CoinGained_Tween();
                 EconomyManager.instance.AddLevelCoin();
                 other.gameObject.SetActive(false);
                 GameManager.instance.CreateAndPlayFX("coin", other.transform.position, Quaternion.identity);
@@ -32,6 +34,20 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 GameManager.instance.CreateAndPlayFX("fuel", other.transform.position, Quaternion.identity);
                 break;
 
+            case 10:// finish line
+                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+                {
+                    GameManager.instance.gameState = GameManager.GameState.endPhase;
+
+                    p_move.MainCamera.transform.GetComponent<CameraMovement>().SetOffset(new Vector3(14, -20, 24));
+                    DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 20f, 1f).SetEase(Ease.OutQuad);
+
+                    p_move.SetFinishPhaseValues();
+                    UI_Manager.instance.TapTapPhase_HandleUI();
+                }
+                
+
+                break;
             default:
 
                 break;
@@ -45,6 +61,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
             case 8:// borders
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
+                    Time.timeScale = .5f;
+                    DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
                     p_move.EliminatedStopMovement();
                     p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
 
@@ -57,15 +75,19 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 break;
 
             case 9:// hammer
-                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+                if (true)
                 {
+                    Time.timeScale = .5f;
+                    DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
                     p_move.EliminatedStopMovement();
                     p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
 
                     transform.gameObject.SetActive(false);
                     GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
+                    if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+                        UI_Manager.instance.Explode_GameOverScreen();
                     GameManager.instance.playerState = GameManager.PlayerState.eliminated;
-                    UI_Manager.instance.Explode_GameOverScreen();
+                    
                 }
                 break;
 
