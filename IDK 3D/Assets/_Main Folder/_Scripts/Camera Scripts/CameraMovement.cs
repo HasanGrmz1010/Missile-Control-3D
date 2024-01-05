@@ -6,6 +6,7 @@ public class CameraMovement : MonoBehaviour
 {
     bool eliminated;
 
+
     [SerializeField] Transform followTarget;
     [SerializeField] Vector3 offset;
     [SerializeField] float camMoveSpeed;
@@ -32,5 +33,10 @@ public class CameraMovement : MonoBehaviour
     public void onPlayerEliminated()
     {
         eliminated = true;
+    }
+
+    public void SetOffset(Vector3 _param)
+    {
+        offset = _param;
     }
 }

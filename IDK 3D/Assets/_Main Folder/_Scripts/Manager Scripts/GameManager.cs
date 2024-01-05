@@ -14,24 +14,36 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    [Header("_____________ GAME DATA _____________")]
+    [SerializeField] GameData_SO GameData;
+
     [Header("_____________ PARTICLE FX _____________")]
     [SerializeField] ParticleSystem coinCollected_FX;
     [SerializeField] ParticleSystem fuelCollected_FX;
     [SerializeField] ParticleSystem missileExplode_FX;
+
+    #region STATE ENUMS
     public enum GameState
-	{
+    {
         startPhase, playing, paused, endPhase
-	}
-	public GameState gameState = new GameState();
+    }
+    public GameState gameState = new GameState();
 
     public enum PlayerState
     {
         ableToPlay, eliminated, win
     }
     public PlayerState playerState = new PlayerState();
+    #endregion
+
 
     private void Start()
     {
+        if (GameData != null)
+        {
+            int lastLevel = GameData.GetGameLevel();
+
+        }
         gameState = GameState.startPhase;
         playerState = PlayerState.ableToPlay;
     }
