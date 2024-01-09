@@ -15,14 +15,17 @@ public class UI_Manager : MonoBehaviour
         else instance = this;
     }
     #endregion
-    [SerializeField] GameObject Fuel_Indicator;
+
+    [SerializeField] GameObject PauseButton;
 
     [Header("------------ Panels ------------")]
     [SerializeField] Image GameOverPanel;
+    [SerializeField] Image LevelPassedPanel;
 
     [Header("------------ Game Over Texts ------------")]
     [SerializeField] RectTransform NoFuelLeft_Text;
     [SerializeField] RectTransform Exploded_Text;
+    [SerializeField] RectTransform LevelPassed_Text;
 
     [Header("------------ Score Texts ------------")]
     [SerializeField] TextMeshProUGUI LevelScore_Text;
@@ -30,21 +33,28 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] TextMeshProUGUI HighScore_Text;
     [SerializeField] TextMeshProUGUI HighScoreValue_Text;
 
-    [Header("------------ Game Over Buttons ------------")]
+    [Header("------------ Buttons ------------")]
     [SerializeField] Button TryAgain_Button;
     [SerializeField] Button GiveUp_Button;
     [SerializeField] Button DoublePrize_Button;
+    [SerializeField] Button Continue_Button;
+    [SerializeField] Button MainMenu_Button;
 
     [Header("/////////////////////////////////////////////////////////////////////////////////\n")]
     [SerializeField] RectTransform CoinIndicator;
     [SerializeField] RectTransform FuelIndicator;
     [SerializeField] RectTransform TapTapIndicator;
+    [SerializeField] Color LevelWin_Color;
+    [SerializeField] Color LevelLose_Color;
 
-    public void Fuel_GameOverScreen()
+    public void Handle_Fuel_GameOverScreen()
     {
-        Fuel_Indicator.SetActive(false);
+        FuelIndicator.gameObject.SetActive(false);
+        PauseButton.SetActive(false);
+        CoinIndicator.gameObject.SetActive(false);
 
         GameOverPanel.gameObject.SetActive(true);
+        GameOverPanel.DOColor(LevelLose_Color, 1.25f);
         GameOverPanel.DOFade(1f, 2f);
 
         float duration = .15f;
@@ -58,11 +68,14 @@ public class UI_Manager : MonoBehaviour
         DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.8f);
     }
 
-    public void Explode_GameOverScreen()
+    public void Handle_Explode_GameOverScreen()
     {
-        Fuel_Indicator.SetActive(false);
+        FuelIndicator.gameObject.SetActive(false);
+        PauseButton.SetActive(false);
+        CoinIndicator.gameObject.SetActive(false);
 
         GameOverPanel.gameObject.SetActive(true);
+        GameOverPanel.DOColor(LevelLose_Color, .4f);
         GameOverPanel.DOFade(1f, 1f);
 
         float duration = .075f;
@@ -73,6 +86,28 @@ public class UI_Manager : MonoBehaviour
         HighScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         TryAgain_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         GiveUp_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
+        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
+    }
+
+    public void Handle_LevelPassedScreen()
+    {
+        FuelIndicator.gameObject.SetActive(false);
+        CoinIndicator.gameObject.SetActive(false);
+        TapTapIndicator.gameObject.SetActive(false);
+        PauseButton.SetActive(false);
+
+        LevelPassedPanel.gameObject.SetActive(true);
+        LevelPassedPanel.DOColor(LevelWin_Color, .4f);
+        LevelPassedPanel.DOFade(1f, 1f);
+
+        float duration = .075f;
+        LevelPassed_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
+        LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
+        LevelScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
+        HighScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
+        HighScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
+        Continue_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
+        MainMenu_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
     }
 
@@ -94,7 +129,7 @@ public class UI_Manager : MonoBehaviour
 
     public void FuelGained_Tween()
     {
-        FuelIndicator.DOPunchScale((Vector3.one / 5), .05f, 1, 1f);
+        FuelIndicator.DOPunchScale((Vector3.one / 5), .5f, 1, 1f);
     }
     #endregion
 

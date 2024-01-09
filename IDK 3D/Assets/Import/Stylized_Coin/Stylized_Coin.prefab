@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 100
+  CoinIndicatorLerpPos: {fileID: 0}
 --- !u!1 &2178442401654197245
 GameObject:
   m_ObjectHideFlags: 0

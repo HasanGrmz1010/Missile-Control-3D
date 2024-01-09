@@ -8,6 +8,8 @@ public class GameData_SO : ScriptableObject
     [SerializeField] private int GAME_LEVEL;
     [SerializeField] private int HIGH_SCORE;
 
+    [SerializeField] private int TOTAL_COIN;
+
     public int GetGameLevel() { return GAME_LEVEL; }
     public void IncreaseGameLevel() { GAME_LEVEL++; }
     public int GetHighScore() { return HIGH_SCORE; }
