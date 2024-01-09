@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    int TapTap_Multiplier;
+
     [Header("_____________ GAME DATA _____________")]
     [SerializeField] GameData_SO GameData;
 
@@ -42,12 +44,12 @@ public class GameManager : MonoBehaviour
         if (GameData != null)
         {
             int lastLevel = GameData.GetGameLevel();
-
         }
         gameState = GameState.startPhase;
         playerState = PlayerState.ableToPlay;
     }
 
+    #region FX Functions
     public void CreateAndPlayFX(string _tag, Vector3 pos, Quaternion qua)
     {
         ParticleSystem selectedFX = null;
@@ -89,5 +91,16 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         fx.gameObject.SetActive(false);
+    }
+    #endregion
+
+    public void SetMultiplierValue(int _val)
+    {
+        if (_val > 0) TapTap_Multiplier = _val;
+    }
+
+    public int GetMultiplierValue()
+    {
+        return TapTap_Multiplier;
     }
 }

@@ -6,27 +6,33 @@ using UnityEngine;
 public class PunchCube : MonoBehaviour
 {
     [SerializeField] List<Transform> cubes = new List<Transform>();
-    
-    Rigidbody rb;
+    [SerializeField] ParticleSystem punchFX;
 
     [SerializeField] List<Vector3> cubesCollisionReadyPos = new List<Vector3>();
     private void Start()
     {
 
-        rb = GetComponent<Rigidbody>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 3)// Player Missile
         {
-            
+            punchFX.gameObject.SetActive(true);
+            punchFX.Play();
             for (int i = 0; i < cubes.Count; i++)
             {
                 cubes[i].transform.DOLocalMove(cubesCollisionReadyPos[i], .1f);
                 cubes[i].GetComponent<Rigidbody>().isKinematic = false;
                 cubes[i].GetComponent<Rigidbody>().AddExplosionForce(2.5f, other.transform.position, 1f);
             }
+            StartCoroutine(DeactivateAfterSeconds(3));
         }
+    }
+
+    IEnumerator DeactivateAfterSeconds(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        transform.parent.gameObject.SetActive(false);
     }
 }

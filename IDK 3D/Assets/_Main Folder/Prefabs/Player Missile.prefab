@@ -573,10 +573,10 @@ MonoBehaviour:
   MainCamera: {fileID: 0}
   upAngle: -45
   downAngle: -135
-  straightAngle: 0
+  straightAngle: -90
   missileSpeed: 12
   EndPhaseMissileSpeed: 16
-  rotationSpeed: 5
+  rotationSpeed: 6
   fuelSpendValue: 0.0004
   LevelEnd_Y_Value: 11
 --- !u!114 &1824027959
@@ -591,6 +591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1122190fc541f494e99faf64cb10f082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  taptap: {fileID: 0}
   p_move: {fileID: 2374538806085817921}
   JerrycanFuelValue: 0.5
 --- !u!1 &3421412415802464819

@@ -18,6 +18,6 @@ public class EventManager : MonoBehaviour
     {
         GameManager.instance.gameState = GameManager.GameState.paused;
         GameManager.instance.playerState = GameManager.PlayerState.eliminated;
-        UI_Manager.instance.Invoke("Fuel_GameOverScreen", 1.25f);
+        UI_Manager.instance.Invoke("Handle_Fuel_GameOverScreen", 1.25f);
     }
 }

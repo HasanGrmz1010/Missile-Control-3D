@@ -8,9 +8,21 @@ public class Hammer : MonoBehaviour
     [SerializeField] float swingTime;
     [SerializeField] Vector3 swingLeftWingRot, swingRightWingRot;
 
+    bool playerStartedLevel;
+
     private void Start()
     {
-        SwingMovement();
+        playerStartedLevel = false;
+    }
+
+    private void Update()
+    {
+        if (playerStartedLevel) return;
+        else if (GameManager.instance.gameState == GameManager.GameState.playing)
+        {
+            playerStartedLevel = true;
+            SwingMovement();
+        }
     }
 
     void SwingMovement()

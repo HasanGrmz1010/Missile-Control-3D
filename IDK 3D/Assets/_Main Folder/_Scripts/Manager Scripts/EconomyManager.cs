@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EconomyManager : MonoBehaviour
@@ -17,6 +18,9 @@ public class EconomyManager : MonoBehaviour
     }
     #endregion
 
+    [Header(" ======== Level Coin Text ========")]
+    [SerializeField] TextMeshProUGUI coinValueText;
+
     [SerializeField] private int mainCoin;
     [SerializeField] int levelCoin;
 
@@ -28,11 +32,13 @@ public class EconomyManager : MonoBehaviour
     public void AddLevelCoin()
     {
         levelCoin++;
+        coinValueText.text = levelCoin.ToString();
     }
 
     public void RemoveLevelCoin()
     {
         levelCoin--;
+        coinValueText.text = levelCoin.ToString();
     }
 
     public void IncreaseMainCoin(int _val)

@@ -37,8 +37,10 @@ public class PlayerMissile_Move : MonoBehaviour
 
     private void Start()
     {
+        // Event Subscribtions
         onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
         onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
+
         ableToMove = true; hasTouched = false; inFinishPhase = false;
         rb = GetComponent<Rigidbody>();
 
@@ -46,7 +48,6 @@ public class PlayerMissile_Move : MonoBehaviour
 
     private void Update()
     {
-
         if (!inFinishPhase)
         {
             if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated)
@@ -57,6 +58,16 @@ public class PlayerMissile_Move : MonoBehaviour
                 {
                     FuelManager.instance.SpendFuel(fuelSpendValue);
                 }
+
+                if (GameManager.instance.gameState == GameManager.GameState.startPhase)
+                {
+                    if (Input.touchCount > 0)
+                    {
+                        GameManager.instance.gameState = GameManager.GameState.playing;
+                    }
+                }
+
+                // -------------- Rocket Functions & Handling Fuel --------------
 
                 if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
                 {
@@ -75,10 +86,6 @@ public class PlayerMissile_Move : MonoBehaviour
                     ableToMove = false;
                 }
             }
-        }
-        else if (inFinishPhase)
-        {
-            //transform.rotation = moveRotation;
         }
     }
 
@@ -109,6 +116,11 @@ public class PlayerMissile_Move : MonoBehaviour
 
         MissileUp_FX.Play();
         IdleSmoke_FX.Stop();
+    }
+
+    public void SetTargetPhaseValues()
+    {
+        missileSpeed = EndPhaseMissileSpeed * 2;
     }
 
     void StartRocketFunctions()
