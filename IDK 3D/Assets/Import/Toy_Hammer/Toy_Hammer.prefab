@@ -204,6 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9051002039318547026}
   - component: {fileID: 1232325720}
+  - component: {fileID: 1526950395}
   m_Layer: 0
   m_Name: Toy_Hammer
   m_TagString: Untagged
@@ -242,6 +243,20 @@ MonoBehaviour:
   swingTime: 3
   swingLeftWingRot: {x: 0, y: 0, z: 120}
   swingRightWingRot: {x: 0, y: 0, z: 240}
+--- !u!136 &1526950395
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316821521241016081}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 11.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 6, z: 0}
 --- !u!1 &4325359942302355890
 GameObject:
   m_ObjectHideFlags: 0

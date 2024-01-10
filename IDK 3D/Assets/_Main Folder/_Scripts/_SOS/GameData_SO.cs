@@ -19,4 +19,7 @@ public class GameData_SO : ScriptableObject
             HIGH_SCORE = _val;
         else return;
     }
+    public void IncreaseTotalCoin(int _val) { if (_val > 0) TOTAL_COIN += _val; }
+    public void DecreaseTotalCoin(int _val) { if (_val > 0 && (TOTAL_COIN - _val) >= 0) TOTAL_COIN -= _val; }
+    public int GetTotalCoinValue() { return TOTAL_COIN; }
 }

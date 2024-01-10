@@ -13,10 +13,12 @@ public class EconomyManager : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            mainCoin = gameData.GetTotalCoinValue();
         }
     }
     #endregion
+
+    [SerializeField] GameData_SO gameData;
 
     [Header(" ======== Level Coin Text ========")]
     [SerializeField] TextMeshProUGUI coinValueText;
@@ -45,7 +47,7 @@ public class EconomyManager : MonoBehaviour
     {
         if (_val > 0)
         {
-            mainCoin += _val;
+            gameData.IncreaseTotalCoin(levelCoin);
         }
     }
 
@@ -53,7 +55,9 @@ public class EconomyManager : MonoBehaviour
     {
         if (_val > 0 && (mainCoin - _val) >= 0)
         {
-            mainCoin -= _val;
+            gameData.DecreaseTotalCoin(_val);
         }
     }
+
+    public int GetLevelCoinAmount() { return levelCoin; }
 }

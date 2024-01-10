@@ -12,7 +12,8 @@ public class PlayerMissile_Move : MonoBehaviour
     [SerializeField] ParticleSystem IdleSmoke_FX;
     public Camera MainCamera;
 
-    bool ableToMove, hasTouched;
+    public bool ableToMove;
+    bool hasTouched;
     bool inFinishPhase;
 
     Rigidbody rb;
@@ -41,16 +42,18 @@ public class PlayerMissile_Move : MonoBehaviour
         onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
         onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
 
-        ableToMove = true; hasTouched = false; inFinishPhase = false;
+        ableToMove = false; hasTouched = false; inFinishPhase = false;
         rb = GetComponent<Rigidbody>();
 
     }
 
     private void Update()
     {
+        HandleMovement();
+
         if (!inFinishPhase)
         {
-            if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+            if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated && ableToMove)
             {
                 Touch touch = Input.GetTouch(0);
 
@@ -61,10 +64,7 @@ public class PlayerMissile_Move : MonoBehaviour
 
                 if (GameManager.instance.gameState == GameManager.GameState.startPhase)
                 {
-                    if (Input.touchCount > 0)
-                    {
-                        GameManager.instance.gameState = GameManager.GameState.playing;
-                    }
+                    GameManager.instance.gameState = GameManager.GameState.playing;
                 }
 
                 // -------------- Rocket Functions & Handling Fuel --------------
@@ -89,10 +89,10 @@ public class PlayerMissile_Move : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        HandleMovement();
-    }
+    //private void FixedUpdate()
+    //{
+    //    HandleMovement();
+    //}
 
     void HandleMovement()
     {
@@ -129,6 +129,7 @@ public class PlayerMissile_Move : MonoBehaviour
         {
             MissileUp_FX.Play();
             IdleSmoke_FX.Stop();
+
             hasTouched = true;
             rb.isKinematic = false;
             moveRotation = Quaternion.Euler(0, 0, upAngle);
@@ -142,6 +143,7 @@ public class PlayerMissile_Move : MonoBehaviour
         {
             MissileUp_FX.Stop();
             IdleSmoke_FX.Play();
+
             MoveVec = new Vector3(1f, -.75f, 0);
             moveRotation = Quaternion.Euler(0, 0, downAngle);
         }

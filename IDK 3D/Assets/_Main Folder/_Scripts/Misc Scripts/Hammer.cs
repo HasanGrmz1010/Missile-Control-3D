@@ -34,4 +34,12 @@ public class Hammer : MonoBehaviour
             })
             .SetLoops(-1, LoopType.Yoyo);
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "MainCamera")
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }

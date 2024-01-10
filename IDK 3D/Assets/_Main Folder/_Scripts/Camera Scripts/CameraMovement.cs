@@ -6,7 +6,6 @@ public class CameraMovement : MonoBehaviour
 {
     bool eliminated;
 
-
     [SerializeField] Transform followTarget;
     [SerializeField] Vector3 offset;
     [SerializeField] float camMoveSpeed;
@@ -15,7 +14,7 @@ public class CameraMovement : MonoBehaviour
         eliminated = false;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         HandleCamMovement();
     }

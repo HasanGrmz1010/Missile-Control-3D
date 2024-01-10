@@ -21,7 +21,6 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         {
             case 6:// coin
                 other.GetComponent<Coin>().CollectedStateMove();
-                //UI_Manager.instance.CoinGained_Tween();
                 EconomyManager.instance.AddLevelCoin();
                 GameManager.instance.CreateAndPlayFX("coin", other.transform.position, Quaternion.identity);
                 break;
