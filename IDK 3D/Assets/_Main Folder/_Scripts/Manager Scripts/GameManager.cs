@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         fx.gameObject.SetActive(false);
+        GarbageCollector.instance.HandleGarbageCollecting(fx.gameObject);
     }
     #endregion
 

@@ -21,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     [Header("------------ Panels ------------")]
     [SerializeField] Image GameOverPanel;
     [SerializeField] Image LevelPassedPanel;
+    [SerializeField] Image PauseMenuPanel;
 
     [Header("------------ Game Over Texts ------------")]
     [SerializeField] RectTransform NoFuelLeft_Text;
@@ -109,6 +110,31 @@ public class UI_Manager : MonoBehaviour
         Continue_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         MainMenu_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
+    }
+
+    public void Handle_PauseMenuScreen(string mode)
+    {
+        switch (mode)
+        {
+            case "open":
+                PauseMenuPanel.gameObject.SetActive(true);
+                PauseMenuPanel.DOFade(1f, .25f);
+                PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
+                break;
+
+            case "close":
+                PauseMenuPanel.DOFade(.3f, .3f);
+                PauseMenuPanel.rectTransform.DOLocalMoveX(1400f, .3f).SetEase(Ease.InBack).OnComplete(() =>
+                {
+                    PauseMenuPanel.rectTransform.anchoredPosition = new Vector2(-1400f, 0f);
+                    PauseMenuPanel.gameObject.SetActive(false);
+                });
+                break;
+
+            default:
+                break;
+        }
+        
     }
 
     public void TapTapPhase_HandleUI()

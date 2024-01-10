@@ -32,4 +32,12 @@ public class Coin : MonoBehaviour
             gameObject.SetActive(false);
         });
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("MainCamera"))
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }

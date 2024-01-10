@@ -9,10 +9,6 @@ public class PunchCube : MonoBehaviour
     [SerializeField] ParticleSystem punchFX;
 
     [SerializeField] List<Vector3> cubesCollisionReadyPos = new List<Vector3>();
-    private void Start()
-    {
-
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,7 +22,7 @@ public class PunchCube : MonoBehaviour
                 cubes[i].GetComponent<Rigidbody>().isKinematic = false;
                 cubes[i].GetComponent<Rigidbody>().AddExplosionForce(2.5f, other.transform.position, 1f);
             }
-            StartCoroutine(DeactivateAfterSeconds(3));
+            StartCoroutine(DeactivateAfterSeconds(1.5f));
         }
     }
 
@@ -34,5 +30,6 @@ public class PunchCube : MonoBehaviour
     {
         yield return new WaitForSeconds(sec);
         transform.parent.gameObject.SetActive(false);
+        GarbageCollector.instance.HandleGarbageCollecting(transform.parent.gameObject);
     }
 }
