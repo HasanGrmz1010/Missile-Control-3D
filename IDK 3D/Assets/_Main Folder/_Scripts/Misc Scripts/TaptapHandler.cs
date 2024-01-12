@@ -42,6 +42,9 @@ public class TaptapHandler : MonoBehaviour
         if (Tap_Value <= -400f && indicator_active)
         {
             multiplier = 1;
+
+
+
             GameManager.instance.SetMultiplierValue(multiplier);
             Deactivate_TapTapIndicator();
         }

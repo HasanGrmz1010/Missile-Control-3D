@@ -21,13 +21,14 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         {
             case 6:// coin
                 other.GetComponent<Coin>().CollectedStateMove();
-                EconomyManager.instance.AddLevelCoin();
+                EconomyManager.instance.IncreaseLevelScore(10);
                 GameManager.instance.CreateAndPlayFX("coin", other.transform.position, Quaternion.identity);
                 break;
 
             case 7:// fuel
                 UI_Manager.instance.FuelGained_Tween();
                 FuelManager.instance.AddFuel(JerrycanFuelValue);
+                EconomyManager.instance.IncreaseLevelScore(5);
                 GameManager.instance.CreateAndPlayFX("fuel", other.transform.position, Quaternion.identity);
                 other.gameObject.SetActive(false);
                 break;
@@ -66,35 +67,11 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         switch (col.gameObject.layer)
         {
             case 8:// borders
-                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
-                {
-                    Time.timeScale = .5f;
-                    DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
-                    p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
-                    p_move.EliminatedStopMovement();
-
-                    transform.gameObject.SetActive(false);
-                    GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
-                    GameManager.instance.playerState = GameManager.PlayerState.eliminated;
-                    UI_Manager.instance.Handle_Explode_GameOverScreen();
-
-                }
+                HandlePlayerExploded();
                 break;
 
             case 9:// hammer
-                Time.timeScale = .5f;
-                DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
-                p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
-                p_move.EliminatedStopMovement();
-
-                transform.gameObject.SetActive(false);
-                GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
-                
-                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
-                {
-                    UI_Manager.instance.Handle_Explode_GameOverScreen();
-                    GameManager.instance.playerState = GameManager.PlayerState.eliminated;
-                }
+                HandlePlayerExploded();
                 break;
 
             case 12:// last target
@@ -109,9 +86,30 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
 
                 UI_Manager.instance.Handle_LevelPassedScreen();
                 break;
+
+            case 13:// blade
+                HandlePlayerExploded();
+                break;
             default:
 
                 break;
+        }
+    }
+
+    void HandlePlayerExploded()
+    {
+        Time.timeScale = .5f;
+        DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
+        p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
+        p_move.EliminatedStopMovement();
+
+        transform.gameObject.SetActive(false);
+        GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
+
+        if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+        {
+            UI_Manager.instance.Handle_Explode_GameOverScreen();
+            GameManager.instance.playerState = GameManager.PlayerState.eliminated;
         }
     }
 }

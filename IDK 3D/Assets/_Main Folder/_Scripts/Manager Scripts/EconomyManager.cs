@@ -24,13 +24,16 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI coinValueText;
 
     [SerializeField] private int mainCoin;
-    [SerializeField] int levelCoin;
+    [SerializeField] private int levelCoin;
+    [SerializeField] private int levelScore;
 
     private void Start()
     {
         levelCoin = 0;
+        levelScore = 0;
     }
 
+    #region Coin Functions
     public void AddLevelCoin()
     {
         levelCoin++;
@@ -60,4 +63,22 @@ public class EconomyManager : MonoBehaviour
     }
 
     public int GetLevelCoinAmount() { return levelCoin; }
+    #endregion
+
+    #region Score Functions
+    public void IncreaseLevelScore(int _val)
+    {
+        if (_val > 0)
+            levelScore += _val;
+        else return;
+    }
+
+    public int GetCurrentLevelScore()
+    {
+        if (levelScore > 0) return levelScore;
+        else return 0;
+    }
+
+    #endregion
+
 }

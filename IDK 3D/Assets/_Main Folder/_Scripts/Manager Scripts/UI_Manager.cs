@@ -16,6 +16,8 @@ public class UI_Manager : MonoBehaviour
     }
     #endregion
 
+
+    [SerializeField] GameData_SO gameData;
     [SerializeField] GameObject PauseButton;
 
     [Header("------------ Panels ------------")]
@@ -38,8 +40,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Button TryAgain_Button;
     [SerializeField] Button GiveUp_Button;
     [SerializeField] Button DoublePrize_Button;
-    [SerializeField] Button Continue_Button;
     [SerializeField] Button MainMenu_Button;
+    [SerializeField] Button CollectCoinsButton;
+    [SerializeField] Button StartLevelButton;
 
     [Header("/////////////////////////////////////////////////////////////////////////////////\n")]
     [SerializeField] RectTransform CoinIndicator;
@@ -48,6 +51,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Color LevelWin_Color;
     [SerializeField] Color LevelLose_Color;
 
+    #region Game Over & Level Passed Handling Functions
     public void Handle_Fuel_GameOverScreen()
     {
         FuelIndicator.gameObject.SetActive(false);
@@ -57,6 +61,8 @@ public class UI_Manager : MonoBehaviour
         GameOverPanel.gameObject.SetActive(true);
         GameOverPanel.DOColor(LevelLose_Color, 1.25f);
         GameOverPanel.DOFade(1f, 2f);
+
+        SetScoreTexts();
 
         float duration = .15f;
         NoFuelLeft_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.25f);
@@ -79,6 +85,8 @@ public class UI_Manager : MonoBehaviour
         GameOverPanel.DOColor(LevelLose_Color, .4f);
         GameOverPanel.DOFade(1f, 1f);
 
+        SetScoreTexts();
+
         float duration = .075f;
         Exploded_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
         LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
@@ -93,7 +101,6 @@ public class UI_Manager : MonoBehaviour
     public void Handle_LevelPassedScreen()
     {
         FuelIndicator.gameObject.SetActive(false);
-        CoinIndicator.gameObject.SetActive(false);
         TapTapIndicator.gameObject.SetActive(false);
         PauseButton.SetActive(false);
 
@@ -101,15 +108,20 @@ public class UI_Manager : MonoBehaviour
         LevelPassedPanel.DOColor(LevelWin_Color, .4f);
         LevelPassedPanel.DOFade(1f, 1f);
 
+        SetScoreTexts();
+
         float duration = .075f;
-        LevelPassed_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
+        LevelPassed_Text.DOLocalMoveY(700f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
         LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         LevelScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         HighScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         HighScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
-        Continue_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
-        MainMenu_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
-        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
+        MainMenu_Button.transform.DOLocalMoveY(-300f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
+        DoublePrize_Button.transform.DOLocalMoveX(225f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
+        CollectCoinsButton.transform.DOLocalMoveX(-225f, duration).SetEase(Ease.InCirc).SetDelay(.4f).OnComplete(() =>
+        {
+            Time.timeScale = 1f;
+        });
     }
 
     public void Handle_PauseMenuScreen(string mode)
@@ -120,6 +132,7 @@ public class UI_Manager : MonoBehaviour
                 PauseMenuPanel.gameObject.SetActive(true);
                 PauseMenuPanel.DOFade(1f, .25f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
+                StartLevelButton.gameObject.SetActive(false);
                 break;
 
             case "close":
@@ -129,12 +142,25 @@ public class UI_Manager : MonoBehaviour
                     PauseMenuPanel.rectTransform.anchoredPosition = new Vector2(-1400f, 0f);
                     PauseMenuPanel.gameObject.SetActive(false);
                 });
+                StartLevelButton.gameObject.SetActive(true);
                 break;
 
             default:
                 break;
         }
-        
+
+    }
+    #endregion
+
+    public void SetScoreTexts()
+    {
+        int currentScore = EconomyManager.instance.GetCurrentLevelScore();
+        LevelScoreValue_Text.text = currentScore.ToString();
+        if (gameData.GetHighScore() < currentScore)
+        {
+            gameData.ChangeHighScore(currentScore);
+        }
+        HighScoreValue_Text.text = gameData.GetHighScore().ToString();
     }
 
     public void TapTapPhase_HandleUI()
