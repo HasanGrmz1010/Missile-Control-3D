@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3548588485384254794}
   - component: {fileID: 3548588485384254795}
   m_Layer: 0
-  m_Name: Fuel Collected FX
+  m_Name: SPLASH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

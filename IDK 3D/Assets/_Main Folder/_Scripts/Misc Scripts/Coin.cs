@@ -29,6 +29,7 @@ public class Coin : MonoBehaviour
         transform.DOMove(CoinIndicatorLerpPos.position, .5f).OnComplete(() =>
         {
             UI_Manager.instance.CoinGained_Tween();
+            EconomyManager.instance.AddLevelCoin();
             gameObject.SetActive(false);
         });
     }

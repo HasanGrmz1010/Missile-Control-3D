@@ -20,6 +20,8 @@ public class ButtonManager : MonoBehaviour
     }
     #endregion
 
+    [SerializeField] ParticleSystem coinBurst_FX;
+
     [SerializeField] GameData_SO gameData;
     [SerializeField] PlayerMissile_Move p_move;
 
@@ -72,6 +74,20 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void CollectCoinsButton()
+    {
+        float burstFX_duration = coinBurst_FX.main.duration;
+        coinBurst_FX.Play();
+        Invoke("LoadNextLevel", burstFX_duration);
+    }
+
+    void LoadNextLevel()
+    {
+        gameData.IncreaseGameLevel();
+        EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
+        SceneManager.LoadScene(gameData.GetGameLevel());
+    }
+
     public void DoublePrize_Button()
     {
         // WATCH ADD AND x2 THE COINS
@@ -86,6 +102,7 @@ public class ButtonManager : MonoBehaviour
     public void LevelPassed_MainMenu()
     {
         // RETURN THE MAIN MENU
+        Time.timeScale = 1f;
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
         SceneManager.LoadScene(0);
     }
