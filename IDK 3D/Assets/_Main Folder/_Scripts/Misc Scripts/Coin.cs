@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Coin : MonoBehaviour
 {
+
     [SerializeField] float turnSpeed;
     [SerializeField] Transform CoinIndicatorLerpPos;
     private void Start()

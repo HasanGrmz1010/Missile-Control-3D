@@ -89,11 +89,6 @@ public class PlayerMissile_Move : MonoBehaviour
         }
     }
 
-    //private void FixedUpdate()
-    //{
-    //    HandleMovement();
-    //}
-
     void HandleMovement()
     {
         if (hasTouched)
