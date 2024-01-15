@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bdbb7d8e132ad14bad859f033dd6995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinPickupSound: {fileID: 8300000, guid: bc9bda548c635a14680808d8e1985ed8, type: 3}
   turnSpeed: 100
   CoinIndicatorLerpPos: {fileID: 0}
 --- !u!1 &2178442401654197245

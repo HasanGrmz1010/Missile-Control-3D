@@ -20,12 +20,14 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         switch (other.gameObject.layer)
         {
             case 6:// coin
+                SoundManager.instance.PlayCoinSoundFX();
                 other.GetComponent<Coin>().CollectedStateMove();
                 EconomyManager.instance.IncreaseLevelScore(10);
                 GameManager.instance.CreateAndPlayFX("coin", other.transform.position, Quaternion.identity);
                 break;
 
             case 7:// fuel
+                SoundManager.instance.PlayFuelSoundFX();
                 UI_Manager.instance.FuelGained_Tween();
                 FuelManager.instance.AddFuel(JerrycanFuelValue);
                 EconomyManager.instance.IncreaseLevelScore(5);
