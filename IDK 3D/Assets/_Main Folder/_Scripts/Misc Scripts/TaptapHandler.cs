@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TaptapHandler : MonoBehaviour
 {
     [SerializeField] Camera mainCam;
+    [SerializeField] PlayerMissile_CollideHandler p_col;
     [SerializeField] float tapLosePosX, tapWinPosX;
 
     [SerializeField] RectTransform TapTimerIndicator;
@@ -41,17 +42,13 @@ public class TaptapHandler : MonoBehaviour
 
         if (Tap_Value <= -400f && indicator_active)
         {
-            multiplier = 1;
-
-
-
-            GameManager.instance.SetMultiplierValue(multiplier);
+            p_col.HandlePlayerExploded();
+            SoundManager.instance.ExplodeSoundFX();
             Deactivate_TapTapIndicator();
         }
         if (Tap_Value >= 400f && indicator_active)
         {
-            multiplier = 4;
-            GameManager.instance.SetMultiplierValue(multiplier);
+            UI_Manager.instance.TapTapPlusCoin_HandleUI();
             Deactivate_TapTapIndicator();
         }
     }

@@ -63,19 +63,24 @@ public class ButtonManager : MonoBehaviour
     public void GameOver_GiveUp()
     {
         // LOSE LEVEL COINS AND RETURN MAIN MENU
+        SoundManager.instance.PlayButtonPressedFX();
         Time.timeScale = 1f;
+        SoundManager.instance.IncreaseVolume_Music(.4f);
         SceneManager.LoadScene(0);
     }
 
     public void GameOver_TryAgain()
     {
         // RELOAD CURRENT SCENE
+        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.IncreaseVolume_Music(.1f);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void CollectCoinsButton()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         float burstFX_duration = coinBurst_FX.main.duration;
         coinBurst_FX.Play();
         Invoke("LoadNextLevel", burstFX_duration);
@@ -85,55 +90,67 @@ public class ButtonManager : MonoBehaviour
     {
         gameData.IncreaseGameLevel();
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
+        SoundManager.instance.IncreaseVolume_Music(.1f);
         SceneManager.LoadScene(gameData.GetGameLevel());
     }
 
     public void DoublePrize_Button()
     {
         // WATCH ADD AND x2 THE COINS
+        SoundManager.instance.PlayButtonPressedFX();
     }
 
     public void LevelPassed_NextLevel()
     {
         // ADD COINS TO -TOTAL COINS- AND LOAD NEXT SCENE
+        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.IncreaseVolume_Music(.1f);
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
     }
 
     public void LevelPassed_MainMenu()
     {
         // RETURN THE MAIN MENU
+        SoundManager.instance.PlayButtonPressedFX();
         Time.timeScale = 1f;
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
+        SoundManager.instance.IncreaseVolume_Music(.4f);
         SceneManager.LoadScene(0);
     }
 
     #region Main Menu Button Function
     void StartGame_LastLevel()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         SceneManager.LoadScene(gameData.GetGameLevel());
+        SoundManager.instance.DecreaseVolume_Music(.1f);
     }
     #endregion
 
     #region Pause Menu Button Function
     void PauseMenu()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         isGamePaused = true;
         UI_Manager.instance.Handle_PauseMenuScreen("open");
     }
 
     void PauseMenu_Resume()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         isGamePaused = false;
         UI_Manager.instance.Handle_PauseMenuScreen("close");
     }
 
     void PauseMenu_ReturnMenu()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         SceneManager.LoadScene(0);
     }
 
     void PauseMenu_ExitGame()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         Application.Quit();
     }
     #endregion
@@ -141,6 +158,7 @@ public class ButtonManager : MonoBehaviour
 
     void ToggleStartLevelButton()
     {
+        SoundManager.instance.PlayButtonPressedFX();
         p_move.ableToMove = true;
         DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 35f, 1f).SetEase(Ease.OutQuad);
         PM_pauseButton.transform.DOLocalMoveX(-1250f, .4f).SetEase(Ease.InBack).OnComplete(() =>

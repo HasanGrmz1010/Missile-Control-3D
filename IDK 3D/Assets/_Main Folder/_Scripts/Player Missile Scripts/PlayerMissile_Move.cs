@@ -42,6 +42,9 @@ public class PlayerMissile_Move : MonoBehaviour
         onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
         onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
 
+        SoundManager.instance.OpenRocketSoundVolume();
+        SoundManager.instance.MuteEffectSource();
+
         ableToMove = false; hasTouched = false; inFinishPhase = false;
         rb = GetComponent<Rigidbody>();
 
@@ -72,11 +75,13 @@ public class PlayerMissile_Move : MonoBehaviour
                 if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
                 {
                     StartRocketFunctions();
+                    SoundManager.instance.PlayRocketSoundFX_Boost();
                 }
 
                 else if (touch.phase == TouchPhase.Ended)
                 {
                     StopRocketFunctions();
+                    SoundManager.instance.PlayRocketSoundFX_Fall();
                 }
 
                 else if (!FuelManager.instance.hasFuel() && ableToMove)

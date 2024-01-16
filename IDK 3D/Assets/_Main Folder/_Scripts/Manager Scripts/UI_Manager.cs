@@ -45,11 +45,13 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Button StartLevelButton;
 
     [Header("/////////////////////////////////////////////////////////////////////////////////\n")]
+    [SerializeField] RectTransform TapTapPlusCoin;
     [SerializeField] RectTransform CoinIndicator;
     [SerializeField] RectTransform FuelIndicator;
     [SerializeField] RectTransform TapTapIndicator;
     [SerializeField] Color LevelWin_Color;
     [SerializeField] Color LevelLose_Color;
+    [SerializeField] Color NoAlphaText_Color;
 
     #region Game Over & Level Passed Handling Functions
     public void Handle_Fuel_GameOverScreen()
@@ -72,7 +74,10 @@ public class UI_Manager : MonoBehaviour
         HighScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
         TryAgain_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.6f);
         GiveUp_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.6f);
-        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.8f);
+        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.8f).OnComplete(() =>
+        {
+            SoundManager.instance.DecreaseVolume_Music(.02f);
+        });
     }
 
     public void Handle_Explode_GameOverScreen()
@@ -95,7 +100,10 @@ public class UI_Manager : MonoBehaviour
         HighScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         TryAgain_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         GiveUp_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
-        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
+        DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f).OnComplete(() =>
+        {
+            SoundManager.instance.DecreaseVolume_Music(.02f);
+        });
     }
 
     public void Handle_LevelPassedScreen()
@@ -120,6 +128,7 @@ public class UI_Manager : MonoBehaviour
         DoublePrize_Button.transform.DOLocalMoveX(225f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
         CollectCoinsButton.transform.DOLocalMoveX(-225f, duration).SetEase(Ease.InCirc).SetDelay(.4f).OnComplete(() =>
         {
+            SoundManager.instance.DecreaseVolume_Music(.02f);
             Time.timeScale = 1f;
         });
     }
@@ -129,6 +138,7 @@ public class UI_Manager : MonoBehaviour
         switch (mode)
         {
             case "open":
+                SoundManager.instance.DecreaseVolume_Music(.02f);
                 PauseMenuPanel.gameObject.SetActive(true);
                 PauseMenuPanel.DOFade(1f, .25f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
@@ -136,6 +146,7 @@ public class UI_Manager : MonoBehaviour
                 break;
 
             case "close":
+                SoundManager.instance.IncreaseVolume_Music(.1f);
                 PauseMenuPanel.DOFade(.3f, .3f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(1400f, .3f).SetEase(Ease.InBack).OnComplete(() =>
                 {
@@ -172,6 +183,16 @@ public class UI_Manager : MonoBehaviour
         });
     }
 
+    public void TapTapPlusCoin_HandleUI()
+    {
+        TapTapPlusCoin.gameObject.SetActive(true);
+        EconomyManager.instance.IncreaseLevelCoin(100);
+        TapTapPlusCoin.DOLocalMoveY(200f, 1.5f).SetEase(Ease.Linear);
+        TapTapPlusCoin.GetComponent<TextMeshProUGUI>().DOColor(NoAlphaText_Color, 1f).OnComplete(() =>
+        {
+            TapTapPlusCoin.gameObject.SetActive(false);
+        });
+    }
 
     #region Tween UI Functions
     public void CoinGained_Tween()

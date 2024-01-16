@@ -34,6 +34,15 @@ public class EconomyManager : MonoBehaviour
     }
 
     #region Coin Functions
+    public void IncreaseLevelCoin(int _val)
+    {
+        if (_val > 0)
+        {
+            levelCoin += _val;
+            coinValueText.text = levelCoin.ToString();
+        }
+    }
+
     public void AddLevelCoin()
     {
         levelCoin++;

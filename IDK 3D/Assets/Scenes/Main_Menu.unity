@@ -647,11 +647,14 @@ MonoBehaviour:
   EffectSource: {fileID: 816757534}
   MusicSource: {fileID: 356822767}
   mainMenuMusic: {fileID: 8300000, guid: 773dc815fbae9ee4eb09de71425ef610, type: 3}
-  rocketBooster: {fileID: 8300000, guid: 866f6033f68846e4bbe084d422d97479, type: 3}
+  rocketBooster: {fileID: 8300000, guid: 2e42cc444cd2411479b0157f4e1cf65f, type: 3}
   rocketFreeFall: {fileID: 8300000, guid: 717e3ef498b49db41a7002f490f906d6, type: 3}
+  rocketExplode: {fileID: 8300000, guid: 696401fcf546a794d81c5a91907d4481, type: 3}
   coinSound: {fileID: 8300000, guid: bc9bda548c635a14680808d8e1985ed8, type: 3}
   fuelSound: {fileID: 8300000, guid: cc094af1532d67b4393bc8fbcfc67044, type: 3}
   fuelBlastSound: {fileID: 8300000, guid: a53e5c9ecb021864a8ce7ba79d5bf2d7, type: 3}
+  buttonPressed: {fileID: 8300000, guid: 02aa536e739abe14d9e6334124a54eea, type: 3}
+  popper: {fileID: 8300000, guid: 0fcde4e2a8861cc48955e383f3bec815, type: 3}
 --- !u!4 &291620550
 Transform:
   m_ObjectHideFlags: 0
@@ -946,11 +949,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 773dc815fbae9ee4eb09de71425ef610, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2963,11 +2966,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: 2e42cc444cd2411479b0157f4e1cf65f, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
