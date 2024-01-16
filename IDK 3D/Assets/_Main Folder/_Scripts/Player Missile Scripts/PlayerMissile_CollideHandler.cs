@@ -38,6 +38,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
             case 10:// finish line
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
+                    SoundManager.instance.FinalStageSoundFX();
                     rb.constraints = RigidbodyConstraints.FreezeRotation;
                     GameManager.instance.gameState = GameManager.GameState.endPhase;
 
@@ -53,8 +54,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
             case 11:// target line
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
+                    SoundManager.instance.FinalTargetSoundFX();
                     DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 40f, 1f).SetEase(Ease.OutQuad);
-
                     p_move.SetTargetPhaseValues();
                 }
                 break;
@@ -69,10 +70,12 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         switch (col.gameObject.layer)
         {
             case 8:// borders
+                SoundManager.instance.ExplodeSoundFX();
                 HandlePlayerExploded();
                 break;
 
             case 9:// hammer
+                SoundManager.instance.ExplodeSoundFX();
                 HandlePlayerExploded();
                 break;
 
@@ -84,12 +87,14 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 GameManager.instance.SetMultiplierValue(taptap.GetTaptapMultiplier());
                 GameManager.instance.playerState = GameManager.PlayerState.win;
                 GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
+                SoundManager.instance.ExplodeSoundFX();
 
 
                 UI_Manager.instance.Handle_LevelPassedScreen();
                 break;
 
             case 13:// blade
+                SoundManager.instance.ExplodeSoundFX();
                 HandlePlayerExploded();
                 break;
             default:
@@ -98,7 +103,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         }
     }
 
-    void HandlePlayerExploded()
+    public void HandlePlayerExploded()
     {
         Time.timeScale = .5f;
         DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
