@@ -7843,7 +7843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &369506295
 Transform:
   m_ObjectHideFlags: 0
@@ -7873,6 +7873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: 9f6e02815d310b7429559d1f587f4915, type: 2}
   coinValueText: {fileID: 733151223}
+  MM_coinValueText: {fileID: 0}
   mainCoin: 0
   levelCoin: 0
   levelScore: 0
@@ -10186,7 +10187,7 @@ GameObject:
   - component: {fileID: 733151223}
   m_Layer: 5
   m_Name: Coin Value Text
-  m_TagString: Untagged
+  m_TagString: coinText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11979,6 +11980,7 @@ MonoBehaviour:
   RocketSource: {fileID: 0}
   EffectSource: {fileID: 0}
   MusicSource: {fileID: 0}
+  LevelStatusSource: {fileID: 0}
   mainMenuMusic: {fileID: 8300000, guid: 773dc815fbae9ee4eb09de71425ef610, type: 3}
   rocketBooster: {fileID: 8300000, guid: 866f6033f68846e4bbe084d422d97479, type: 3}
   rocketFreeFall: {fileID: 8300000, guid: 717e3ef498b49db41a7002f490f906d6, type: 3}
@@ -11988,6 +11990,9 @@ MonoBehaviour:
   fuelBlastSound: {fileID: 8300000, guid: a53e5c9ecb021864a8ce7ba79d5bf2d7, type: 3}
   buttonPressed: {fileID: 0}
   popper: {fileID: 0}
+  coinCollected: {fileID: 0}
+  levelPassed: {fileID: 0}
+  levelFailed: {fileID: 0}
 --- !u!4 &887292142
 Transform:
   m_ObjectHideFlags: 0
@@ -17780,7 +17785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1761208735
 Transform:
   m_ObjectHideFlags: 0
@@ -17808,7 +17813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac672b4402e0a54691d22a60d238116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameData: {fileID: 0}
+  GameData: {fileID: 11400000, guid: 9f6e02815d310b7429559d1f587f4915, type: 2}
   coinCollected_FX: {fileID: 6146545414153545492, guid: 61753401622c2a947a30e2147430e97d,
     type: 3}
   fuelCollected_FX: {fileID: 4035903591278710482, guid: aa122f157eac1c8428ae5db8a315ccd8,

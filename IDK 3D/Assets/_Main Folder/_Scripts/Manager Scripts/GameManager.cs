@@ -10,7 +10,11 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null && instance != this) Destroy(this);
-        else instance = this;
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
     }
     #endregion
 
@@ -90,8 +94,11 @@ public class GameManager : MonoBehaviour
     IEnumerator DeactivateFX(ParticleSystem fx, float duration)
     {
         yield return new WaitForSeconds(duration);
-        fx.gameObject.SetActive(false);
-        GarbageCollector.instance.HandleGarbageCollecting(fx.gameObject);
+        if (fx != null)
+        {
+            fx.gameObject.SetActive(false);
+            GarbageCollector.instance.HandleGarbageCollecting(fx.gameObject);
+        }
     }
     #endregion
 

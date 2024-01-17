@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EconomyManager : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class EconomyManager : MonoBehaviour
         {
             instance = this;
             mainCoin = gameData.GetTotalCoinValue();
+            DontDestroyOnLoad(this);
         }
     }
     #endregion
@@ -22,6 +25,7 @@ public class EconomyManager : MonoBehaviour
 
     [Header(" ======== Level Coin Text ========")]
     [SerializeField] TextMeshProUGUI coinValueText;
+    [SerializeField] TextMeshProUGUI MM_coinValueText;
 
     [SerializeField] private int mainCoin;
     [SerializeField] private int levelCoin;
@@ -29,6 +33,9 @@ public class EconomyManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.activeSceneChanged += AssignCoinText;
+
+        MM_coinValueText.text = gameData.GetTotalCoinValue().ToString();
         levelCoin = 0;
         levelScore = 0;
     }
@@ -90,4 +97,22 @@ public class EconomyManager : MonoBehaviour
 
     #endregion
 
+    public void ResetCoinAndScore()
+    {
+        levelCoin = 0;
+        levelScore = 0;
+    }
+
+    private void AssignCoinText(Scene current, Scene next)
+    {
+        if (current.buildIndex == 0)
+        {
+            MM_coinValueText = GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
+            MM_coinValueText.text = gameData.GetTotalCoinValue().ToString();
+        }
+        else
+        {
+            coinValueText = GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
+        }
+    }
 }

@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource RocketSource;
     [SerializeField] AudioSource EffectSource;
     [SerializeField] AudioSource MusicSource;
+    [SerializeField] AudioSource LevelStatusSource;
 
     [SerializeField] AudioClip mainMenuMusic;
 
@@ -35,6 +36,10 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip fuelBlastSound;
     [SerializeField] AudioClip buttonPressed;
     [SerializeField] AudioClip popper;
+    [SerializeField] AudioClip coinCollected;
+    [Header("----------- LEVEL STATUS SOUNDS -----------")]
+    [SerializeField] AudioClip levelPassed;
+    [SerializeField] AudioClip levelFailed;
 
     private void Start()
     {
@@ -71,10 +76,26 @@ public class SoundManager : MonoBehaviour
                     EffectSource.PlayOneShot(buttonPressed);
                     break;
 
+                case "collect":
+                    EffectSource.pitch = 1f;
+                    EffectSource.volume = volume;
+                    EffectSource.PlayOneShot(coinCollected);
+                    break;
+
                 case "popper":
                     EffectSource.pitch = 1f;
                     EffectSource.volume = volume;
                     EffectSource.PlayOneShot(popper);
+                    break;
+
+                case "passed":
+                    LevelStatusSource.volume = volume;
+                    LevelStatusSource.PlayOneShot(levelPassed);
+                    break;
+
+                case "failed":
+                    LevelStatusSource.volume = volume;
+                    LevelStatusSource.PlayOneShot(levelFailed);
                     break;
                 default:
                     break;
@@ -97,12 +118,12 @@ public class SoundManager : MonoBehaviour
     {
         RocketSource.clip = rocketBooster;
         RocketSource.volume = .9f;
-        RocketSource.DOPitch(2f, 5f);
+        RocketSource.DOPitch(1.5f, 5f);
     }
 
     public void FinalTargetSoundFX()
     {
-        RocketSource.DOPitch(3f, 1f).SetEase(Ease.Linear);
+        RocketSource.DOPitch(2.5f, 1f).SetEase(Ease.Linear);
     }
 
     public void OpenRocketSoundVolume()
@@ -155,6 +176,11 @@ public class SoundManager : MonoBehaviour
         PlaySoundFX("fuel_blast", .1f);
     }
 
+    public void PlayCollectedSoundFX()
+    {
+        PlaySoundFX("collect", 1f);
+    }
+
     public void MuteEffectSource()
     {
         EffectSource.volume = 0f;
@@ -162,24 +188,44 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region Music Sound Functions
-    public void DecreaseVolume_Music(float _val)
+    public void ChangeVolume_Music(float _val)
     {
-        if (_val >= 0f)
+        if (_val >= 0)
         {
-            MusicSource.DOFade(_val, .5f);
-            //MusicSource.Stop();
-            //MusicSource.Play();
+            MusicSource.DOFade(_val, .25f);
         }
     }
 
-    public void IncreaseVolume_Music(float _val)
+    //public void DecreaseVolume_Music(float _val)
+    //{
+    //    if (_val >= 0f)
+    //    {
+    //        MusicSource.DOFade(_val, .2f);
+    //        //MusicSource.Stop();
+    //        //MusicSource.Play();
+    //    }
+    //}
+
+    //public void IncreaseVolume_Music(float _val)
+    //{
+    //    if (_val >= 0f && _val > MusicSource.volume)
+    //    {
+    //        MusicSource.DOFade(_val, .2f);
+    //        //MusicSource.Stop();
+    //        //MusicSource.Play();
+    //    }
+    //}
+    #endregion
+
+    #region Level Status Functions
+    public void LevelPassedSoundFX()
     {
-        if (_val >= 0f && _val > MusicSource.volume)
-        {
-            MusicSource.DOFade(_val, .5f);
-            //MusicSource.Stop();
-            //MusicSource.Play();
-        }
+        PlaySoundFX("passed", 1f);
+    }
+
+    public void LevelFailedSoundFX()
+    {
+        PlaySoundFX("failed", 1f);
     }
     #endregion
 
