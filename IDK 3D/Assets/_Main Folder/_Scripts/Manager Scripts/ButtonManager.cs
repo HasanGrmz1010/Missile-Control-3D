@@ -65,32 +65,39 @@ public class ButtonManager : MonoBehaviour
         // LOSE LEVEL COINS AND RETURN MAIN MENU
         SoundManager.instance.PlayButtonPressedFX();
         Time.timeScale = 1f;
-        SoundManager.instance.IncreaseVolume_Music(.4f);
+        SoundManager.instance.ChangeVolume_Music(.4f);
         SceneManager.LoadScene(0);
+        EconomyManager.instance.ResetCoinAndScore();
     }
 
     public void GameOver_TryAgain()
     {
         // RELOAD CURRENT SCENE
+        GameManager.instance.gameState = GameManager.GameState.startPhase;
+        GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
+        EconomyManager.instance.ResetCoinAndScore();
         SoundManager.instance.PlayButtonPressedFX();
-        SoundManager.instance.IncreaseVolume_Music(.1f);
+        SoundManager.instance.ChangeVolume_Music(.1f);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void CollectCoinsButton()
     {
-        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.PlayCollectedSoundFX();
         float burstFX_duration = coinBurst_FX.main.duration;
         coinBurst_FX.Play();
+        EconomyManager.instance.ResetCoinAndScore();
         Invoke("LoadNextLevel", burstFX_duration);
     }
 
     void LoadNextLevel()
     {
+        GameManager.instance.gameState = GameManager.GameState.startPhase;
+        GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
         gameData.IncreaseGameLevel();
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
-        SoundManager.instance.IncreaseVolume_Music(.1f);
+        SoundManager.instance.ChangeVolume_Music(.1f);
         SceneManager.LoadScene(gameData.GetGameLevel());
     }
 
@@ -103,9 +110,12 @@ public class ButtonManager : MonoBehaviour
     public void LevelPassed_NextLevel()
     {
         // ADD COINS TO -TOTAL COINS- AND LOAD NEXT SCENE
+        GameManager.instance.gameState = GameManager.GameState.startPhase;
+        GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
         SoundManager.instance.PlayButtonPressedFX();
-        SoundManager.instance.IncreaseVolume_Music(.1f);
+        SoundManager.instance.ChangeVolume_Music(.1f);
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
+        EconomyManager.instance.ResetCoinAndScore();
     }
 
     public void LevelPassed_MainMenu()
@@ -114,16 +124,20 @@ public class ButtonManager : MonoBehaviour
         SoundManager.instance.PlayButtonPressedFX();
         Time.timeScale = 1f;
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
-        SoundManager.instance.IncreaseVolume_Music(.4f);
+        EconomyManager.instance.ResetCoinAndScore();
+        gameData.IncreaseGameLevel();
+        SoundManager.instance.ChangeVolume_Music(.4f);
         SceneManager.LoadScene(0);
     }
 
     #region Main Menu Button Function
     void StartGame_LastLevel()
     {
+        GameManager.instance.gameState = GameManager.GameState.startPhase;
+        GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
         SoundManager.instance.PlayButtonPressedFX();
         SceneManager.LoadScene(gameData.GetGameLevel());
-        SoundManager.instance.DecreaseVolume_Music(.1f);
+        SoundManager.instance.ChangeVolume_Music(.1f);
     }
     #endregion
 
@@ -145,12 +159,15 @@ public class ButtonManager : MonoBehaviour
     void PauseMenu_ReturnMenu()
     {
         SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.ChangeVolume_Music(.4f);
+        EconomyManager.instance.ResetCoinAndScore();
         SceneManager.LoadScene(0);
     }
 
     void PauseMenu_ExitGame()
     {
         SoundManager.instance.PlayButtonPressedFX();
+        EconomyManager.instance.ResetCoinAndScore();
         Application.Quit();
     }
     #endregion

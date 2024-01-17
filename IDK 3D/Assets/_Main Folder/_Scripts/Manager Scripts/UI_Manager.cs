@@ -67,7 +67,14 @@ public class UI_Manager : MonoBehaviour
         SetScoreTexts();
 
         float duration = .15f;
-        NoFuelLeft_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.25f);
+
+        LevelScoreValue_Text.text = EconomyManager.instance.GetCurrentLevelScore().ToString();
+        HighScoreValue_Text.text = gameData.GetHighScore().ToString();
+
+        NoFuelLeft_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.25f).OnComplete(() =>
+        {
+            SoundManager.instance.LevelFailedSoundFX();
+        });
         LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
         LevelScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
         HighScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
@@ -76,7 +83,7 @@ public class UI_Manager : MonoBehaviour
         GiveUp_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.6f);
         DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.8f).OnComplete(() =>
         {
-            SoundManager.instance.DecreaseVolume_Music(.02f);
+            SoundManager.instance.ChangeVolume_Music(.02f);
         });
     }
 
@@ -93,7 +100,14 @@ public class UI_Manager : MonoBehaviour
         SetScoreTexts();
 
         float duration = .075f;
-        Exploded_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
+
+        LevelScoreValue_Text.text = EconomyManager.instance.GetCurrentLevelScore().ToString();
+        HighScoreValue_Text.text = gameData.GetHighScore().ToString();
+
+        Exploded_Text.DOLocalMoveY(600f, duration).SetEase(Ease.InCirc).SetDelay(.125f).OnComplete(() =>
+        {
+            SoundManager.instance.LevelFailedSoundFX();
+        });
         LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         LevelScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         HighScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
@@ -102,7 +116,7 @@ public class UI_Manager : MonoBehaviour
         GiveUp_Button.transform.DOLocalMoveY(-250f, duration).SetEase(Ease.InCirc).SetDelay(.3f);
         DoublePrize_Button.transform.DOLocalMoveY(-500f, duration).SetEase(Ease.InCirc).SetDelay(.4f).OnComplete(() =>
         {
-            SoundManager.instance.DecreaseVolume_Music(.02f);
+            SoundManager.instance.ChangeVolume_Music(.02f);
         });
     }
 
@@ -119,7 +133,14 @@ public class UI_Manager : MonoBehaviour
         SetScoreTexts();
 
         float duration = .075f;
-        LevelPassed_Text.DOLocalMoveY(700f, duration).SetEase(Ease.InCirc).SetDelay(.125f);
+
+        LevelScoreValue_Text.text = EconomyManager.instance.GetCurrentLevelScore().ToString();
+        HighScoreValue_Text.text = gameData.GetHighScore().ToString();
+
+        LevelPassed_Text.DOLocalMoveY(700f, duration).SetEase(Ease.InCirc).SetDelay(.125f).OnComplete(() =>
+        {
+            SoundManager.instance.LevelPassedSoundFX();
+        });
         LevelScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         LevelScoreValue_Text.rectTransform.DOLocalMoveX(175f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
         HighScore_Text.rectTransform.DOLocalMoveX(-120f, duration).SetEase(Ease.InCirc).SetDelay(.2f);
@@ -128,7 +149,7 @@ public class UI_Manager : MonoBehaviour
         DoublePrize_Button.transform.DOLocalMoveX(225f, duration).SetEase(Ease.InCirc).SetDelay(.4f);
         CollectCoinsButton.transform.DOLocalMoveX(-225f, duration).SetEase(Ease.InCirc).SetDelay(.4f).OnComplete(() =>
         {
-            SoundManager.instance.DecreaseVolume_Music(.02f);
+            SoundManager.instance.ChangeVolume_Music(.02f);
             Time.timeScale = 1f;
         });
     }
@@ -138,7 +159,7 @@ public class UI_Manager : MonoBehaviour
         switch (mode)
         {
             case "open":
-                SoundManager.instance.DecreaseVolume_Music(.02f);
+                SoundManager.instance.ChangeVolume_Music(.02f);
                 PauseMenuPanel.gameObject.SetActive(true);
                 PauseMenuPanel.DOFade(1f, .25f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
@@ -146,7 +167,7 @@ public class UI_Manager : MonoBehaviour
                 break;
 
             case "close":
-                SoundManager.instance.IncreaseVolume_Music(.1f);
+                SoundManager.instance.ChangeVolume_Music(.1f);
                 PauseMenuPanel.DOFade(.3f, .3f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(1400f, .3f).SetEase(Ease.InBack).OnComplete(() =>
                 {
