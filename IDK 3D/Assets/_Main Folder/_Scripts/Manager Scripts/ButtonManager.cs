@@ -87,6 +87,7 @@ public class ButtonManager : MonoBehaviour
         SoundManager.instance.PlayCollectedSoundFX();
         float burstFX_duration = coinBurst_FX.main.duration;
         coinBurst_FX.Play();
+        EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
         EconomyManager.instance.ResetCoinAndScore();
         Invoke("LoadNextLevel", burstFX_duration);
     }

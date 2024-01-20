@@ -9,9 +9,11 @@ public class GameData_SO : ScriptableObject
     [SerializeField] private int HIGH_SCORE;
 
     [SerializeField] private int TOTAL_COIN;
+    [SerializeField] private int GEMS;
 
     public int GetGameLevel() { return GAME_LEVEL; }
     public void IncreaseGameLevel() { GAME_LEVEL++; }
+
     public int GetHighScore() { return HIGH_SCORE; }
     public void ChangeHighScore(int _val)
     {
@@ -19,7 +21,12 @@ public class GameData_SO : ScriptableObject
             HIGH_SCORE = _val;
         else return;
     }
+
     public void IncreaseTotalCoin(int _val) { if (_val > 0) TOTAL_COIN += _val; }
     public void DecreaseTotalCoin(int _val) { if (_val > 0 && (TOTAL_COIN - _val) >= 0) TOTAL_COIN -= _val; }
     public int GetTotalCoinValue() { return TOTAL_COIN; }
+
+    public void IncreaseGems(int _val) { if (_val > 0) GEMS += _val; }
+    public void DecreaseGems(int _val) { if (_val > 0 && (GEMS - _val) >= 0) GEMS -= _val; }
+    public int GetGemsValue() { return GEMS; }
 }

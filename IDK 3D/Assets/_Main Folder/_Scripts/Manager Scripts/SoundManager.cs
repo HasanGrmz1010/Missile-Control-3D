@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip buttonPressed;
     [SerializeField] AudioClip popper;
     [SerializeField] AudioClip coinCollected;
+    [SerializeField] AudioClip taptap_pop;
     [Header("----------- LEVEL STATUS SOUNDS -----------")]
     [SerializeField] AudioClip levelPassed;
     [SerializeField] AudioClip levelFailed;
@@ -80,6 +81,11 @@ public class SoundManager : MonoBehaviour
                     EffectSource.pitch = 1f;
                     EffectSource.volume = volume;
                     EffectSource.PlayOneShot(coinCollected);
+                    break;
+
+                case "taptap":
+                    EffectSource.volume = volume;
+                    EffectSource.PlayOneShot(taptap_pop);
                     break;
 
                 case "popper":
@@ -155,9 +161,14 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region Effect Sound Functions
+    public void PlayTapTapFX()
+    {
+        PlaySoundFX("taptap", 1f);
+    }
+
     public void PlayPopperFX()
     {
-        PlaySoundFX("popper", .2f);
+        PlaySoundFX("popper", .05f);
     }
 
     public void PlayButtonPressedFX()
@@ -195,26 +206,6 @@ public class SoundManager : MonoBehaviour
             MusicSource.DOFade(_val, .25f);
         }
     }
-
-    //public void DecreaseVolume_Music(float _val)
-    //{
-    //    if (_val >= 0f)
-    //    {
-    //        MusicSource.DOFade(_val, .2f);
-    //        //MusicSource.Stop();
-    //        //MusicSource.Play();
-    //    }
-    //}
-
-    //public void IncreaseVolume_Music(float _val)
-    //{
-    //    if (_val >= 0f && _val > MusicSource.volume)
-    //    {
-    //        MusicSource.DOFade(_val, .2f);
-    //        //MusicSource.Stop();
-    //        //MusicSource.Play();
-    //    }
-    //}
     #endregion
 
     #region Level Status Functions

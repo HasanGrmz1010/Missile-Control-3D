@@ -49,6 +49,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] RectTransform CoinIndicator;
     [SerializeField] RectTransform FuelIndicator;
     [SerializeField] RectTransform TapTapIndicator;
+    [SerializeField] TextMeshProUGUI Level_Text;
     [SerializeField] Color LevelWin_Color;
     [SerializeField] Color LevelLose_Color;
     [SerializeField] Color NoAlphaText_Color;
@@ -58,6 +59,7 @@ public class UI_Manager : MonoBehaviour
     {
         FuelIndicator.gameObject.SetActive(false);
         PauseButton.SetActive(false);
+        Level_Text.gameObject.SetActive(false);
         CoinIndicator.gameObject.SetActive(false);
 
         GameOverPanel.gameObject.SetActive(true);
@@ -92,6 +94,7 @@ public class UI_Manager : MonoBehaviour
         FuelIndicator.gameObject.SetActive(false);
         PauseButton.SetActive(false);
         CoinIndicator.gameObject.SetActive(false);
+        Level_Text.gameObject.SetActive(false);
 
         GameOverPanel.gameObject.SetActive(true);
         GameOverPanel.DOColor(LevelLose_Color, .4f);
@@ -125,6 +128,7 @@ public class UI_Manager : MonoBehaviour
         FuelIndicator.gameObject.SetActive(false);
         TapTapIndicator.gameObject.SetActive(false);
         PauseButton.SetActive(false);
+        Level_Text.gameObject.SetActive(false);
 
         LevelPassedPanel.gameObject.SetActive(true);
         LevelPassedPanel.DOColor(LevelWin_Color, .4f);
