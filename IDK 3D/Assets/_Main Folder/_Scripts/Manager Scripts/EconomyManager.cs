@@ -16,6 +16,7 @@ public class EconomyManager : MonoBehaviour
         {
             instance = this;
             mainCoin = gameData.GetTotalCoinValue();
+            mainGem = gameData.GetGemsValue();
             DontDestroyOnLoad(this);
         }
     }
@@ -26,16 +27,20 @@ public class EconomyManager : MonoBehaviour
     [Header(" ======== Level Coin Text ========")]
     [SerializeField] TextMeshProUGUI coinValueText;
     [SerializeField] TextMeshProUGUI MM_coinValueText;
+    [SerializeField] TextMeshProUGUI MM_gemValueText;
 
     [SerializeField] private int mainCoin;
     [SerializeField] private int levelCoin;
     [SerializeField] private int levelScore;
+    [SerializeField] private int mainGem;
 
     private void Start()
     {
         SceneManager.activeSceneChanged += AssignCoinText;
 
         MM_coinValueText.text = gameData.GetTotalCoinValue().ToString();
+        MM_gemValueText.text = gameData.GetGemsValue().ToString();
+
         levelCoin = 0;
         levelScore = 0;
     }
@@ -97,6 +102,9 @@ public class EconomyManager : MonoBehaviour
 
     #endregion
 
+    #region Gem Functions
+
+    #endregion
     public void ResetCoinAndScore()
     {
         levelCoin = 0;
@@ -105,10 +113,12 @@ public class EconomyManager : MonoBehaviour
 
     private void AssignCoinText(Scene current, Scene next)
     {
-        if (current.buildIndex == 0)
+        if (next.buildIndex == 0)
         {
             MM_coinValueText = GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
             MM_coinValueText.text = gameData.GetTotalCoinValue().ToString();
+            MM_gemValueText = GameObject.FindGameObjectWithTag("gemText").GetComponent<TextMeshProUGUI>();
+            MM_gemValueText.text = gameData.GetGemsValue().ToString();
         }
         else
         {

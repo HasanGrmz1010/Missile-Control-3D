@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d2431fd2fb4254b9da27ab961062b5, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  GAME_LEVEL: 1
-  HIGH_SCORE: 0
-  TOTAL_COIN: 0
+  GAME_LEVEL: 7
+  HIGH_SCORE: 675
+  TOTAL_COIN: 223
+  GEMS: 5

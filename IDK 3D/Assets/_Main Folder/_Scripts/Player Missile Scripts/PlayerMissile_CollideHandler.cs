@@ -39,6 +39,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
                     SoundManager.instance.FinalStageSoundFX();
+                    SoundManager.instance.ChangeVolume_Music(.05f);
                     rb.constraints = RigidbodyConstraints.FreezeRotation;
                     GameManager.instance.gameState = GameManager.GameState.endPhase;
 
