@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hellfire Missile
+* source:	https://sketchfab.com/3d-models/hellfire-missile-208e1de6721e439cbb1666ec9a6517e5
+* author:	xephoney (https://sketchfab.com/xephoney)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hellfire Missile" (https://sketchfab.com/3d-models/hellfire-missile-208e1de6721e439cbb1666ec9a6517e5) by xephoney (https://sketchfab.com/xephoney) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -12,6 +12,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
     Rigidbody rb;
     private void Start()
     {
+        taptap = GameObject.FindGameObjectWithTag("taptap").GetComponent<TaptapHandler>();
+        p_move = transform.GetComponent<PlayerMissile_Move>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -38,6 +40,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
             case 10:// finish line
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
+                    taptap.ChangeFinalStatus();
                     SoundManager.instance.FinalStageSoundFX();
                     SoundManager.instance.ChangeVolume_Music(.05f);
                     rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -55,6 +58,7 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
             case 11:// target line
                 if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
                 {
+                    taptap.ChangeFinalStatus();
                     SoundManager.instance.FinalTargetSoundFX();
                     DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 40f, 1f).SetEase(Ease.OutQuad);
                     p_move.SetTargetPhaseValues();

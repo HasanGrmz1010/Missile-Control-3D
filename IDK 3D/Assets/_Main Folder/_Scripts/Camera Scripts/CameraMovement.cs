@@ -11,6 +11,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float camMoveSpeed;
     private void Start()
     {
+        followTarget = GameObject.FindGameObjectWithTag("Player").transform;
         eliminated = false;
     }
 

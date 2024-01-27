@@ -11379,8 +11379,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinBurst_FX: {fileID: 218194045}
   gameData: {fileID: 11400000, guid: 9f6e02815d310b7429559d1f587f4915, type: 2}
+  setData: {fileID: 0}
   p_move: {fileID: 1824027957}
   MM_startGameButton: {fileID: 0}
+  MM_toggleMusicButton: {fileID: 0}
   PM_pauseButton: {fileID: 760679242}
   PM_resumeButton: {fileID: 2079282838}
   PM_returnMenuButton: {fileID: 777655778}
@@ -12292,11 +12294,11 @@ GameObject:
   - component: {fileID: 1496914677}
   m_Layer: 5
   m_Name: Tap Timer Indicator
-  m_TagString: Untagged
+  m_TagString: taptap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1496914676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14519,6 +14521,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player Missile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3421412415591537247, guid: bdbcd90ddd96d024288c63200e546eca,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3437010293422746577, guid: bdbcd90ddd96d024288c63200e546eca,
         type: 3}

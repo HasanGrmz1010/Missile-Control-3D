@@ -23,10 +23,12 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] ParticleSystem coinBurst_FX;
 
     [SerializeField] GameData_SO gameData;
+    [SerializeField] SettingsData_SO setData;
     [SerializeField] PlayerMissile_Move p_move;
 
     [Header("\n-------------- Main Menu Buttons --------------")]
     [SerializeField] Button MM_startGameButton;
+    [SerializeField] Button MM_toggleMusicButton;
     [Header("\n-------------- Pause Menu Buttons --------------")]
     [SerializeField] Button PM_pauseButton;
     [SerializeField] Button PM_resumeButton;
@@ -42,11 +44,15 @@ public class ButtonManager : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+            p_move = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMissile_Move>();
+
         isGamePaused = false;
 
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             MM_startGameButton.onClick.AddListener(StartGame_LastLevel);
+            //MM_toggleMusicButton.onClick.AddListener(ToggleMusic);
         }
 
         else
@@ -66,6 +72,7 @@ public class ButtonManager : MonoBehaviour
         SoundManager.instance.PlayButtonPressedFX();
         Time.timeScale = 1f;
         SoundManager.instance.ChangeVolume_Music(.4f);
+        SoundManager.instance.ResetTaptapPitch();
         SceneManager.LoadScene(0);
         EconomyManager.instance.ResetCoinAndScore();
     }
@@ -77,6 +84,7 @@ public class ButtonManager : MonoBehaviour
         GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
         EconomyManager.instance.ResetCoinAndScore();
         SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.ResetTaptapPitch();
         SoundManager.instance.ChangeVolume_Music(.1f);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -85,6 +93,7 @@ public class ButtonManager : MonoBehaviour
     public void CollectCoinsButton()
     {
         SoundManager.instance.PlayCollectedSoundFX();
+        SoundManager.instance.ResetTaptapPitch();
         float burstFX_duration = coinBurst_FX.main.duration;
         coinBurst_FX.Play();
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
@@ -115,6 +124,7 @@ public class ButtonManager : MonoBehaviour
         GameManager.instance.playerState = GameManager.PlayerState.ableToPlay;
         SoundManager.instance.PlayButtonPressedFX();
         SoundManager.instance.ChangeVolume_Music(.1f);
+        SoundManager.instance.ResetTaptapPitch();
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
         EconomyManager.instance.ResetCoinAndScore();
     }
@@ -123,6 +133,7 @@ public class ButtonManager : MonoBehaviour
     {
         // RETURN THE MAIN MENU
         SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.ResetTaptapPitch();
         Time.timeScale = 1f;
         EconomyManager.instance.IncreaseMainCoin(EconomyManager.instance.GetLevelCoinAmount());
         EconomyManager.instance.ResetCoinAndScore();
@@ -139,6 +150,20 @@ public class ButtonManager : MonoBehaviour
         SoundManager.instance.PlayButtonPressedFX();
         SceneManager.LoadScene(gameData.GetGameLevel());
         SoundManager.instance.ChangeVolume_Music(.1f);
+    }
+
+    public void ToggleMusic()
+    {
+        if (setData.Toggle_Music)
+        {
+            SoundManager.instance.ChangeVolume_Music(0f);
+            setData.Toggle_Music = false;
+        }
+        else
+        {
+            setData.Toggle_Music = true;
+            SoundManager.instance.ChangeVolume_Music(.4f);
+        }
     }
     #endregion
 
@@ -178,6 +203,8 @@ public class ButtonManager : MonoBehaviour
     {
         SoundManager.instance.PlayButtonPressedFX();
         p_move.ableToMove = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>().useGravity = false;
+
         DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 35f, 1f).SetEase(Ease.OutQuad);
         PM_pauseButton.transform.DOLocalMoveX(-1250f, .4f).SetEase(Ease.InBack).OnComplete(() =>
         {
