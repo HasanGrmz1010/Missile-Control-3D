@@ -125,4 +125,10 @@ public class EconomyManager : MonoBehaviour
             coinValueText = GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
         }
     }
+
+    public void UpdateCoinValueText()
+    {
+        MM_coinValueText.text = gameData.GetTotalCoinValue().ToString();
+        MM_gemValueText.text = gameData.GetGemsValue().ToString();
+    }
 }

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Missile (Green) for Unity 5
+* source:	https://sketchfab.com/3d-models/missile-green-for-unity-5-56487083389c42b8a0316e9e112f1f27
+* author:	Sabri Ayeş (https://sketchfab.com/sabriayes)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Missile (Green) for Unity 5" (https://sketchfab.com/3d-models/missile-green-for-unity-5-56487083389c42b8a0316e9e112f1f27) by Sabri Ayeş (https://sketchfab.com/sabriayes) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

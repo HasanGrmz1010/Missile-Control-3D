@@ -1,8 +1,11 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -19,10 +22,15 @@ public class SoundManager : MonoBehaviour
     }
     #endregion
 
+    [SerializeField] SettingsData_SO setData;
+    [SerializeField] Button music_toggle;
+    [SerializeField] Toggle fx_toggle;
+
     [SerializeField] AudioSource RocketSource;
     [SerializeField] AudioSource EffectSource;
     [SerializeField] AudioSource MusicSource;
     [SerializeField] AudioSource LevelStatusSource;
+    [SerializeField] AudioSource TaptapSource;
 
     [SerializeField] AudioClip mainMenuMusic;
 
@@ -38,12 +46,15 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip popper;
     [SerializeField] AudioClip coinCollected;
     [SerializeField] AudioClip taptap_pop;
+    [SerializeField] AudioClip cha_ching;
     [Header("----------- LEVEL STATUS SOUNDS -----------")]
     [SerializeField] AudioClip levelPassed;
     [SerializeField] AudioClip levelFailed;
 
     private void Start()
     {
+        SceneManager.activeSceneChanged += CheckMusicSound;
+        if (!setData.Toggle_Music) MusicSource.volume = 0f;
         MusicSource.Play();
     }
 
@@ -84,8 +95,9 @@ public class SoundManager : MonoBehaviour
                     break;
 
                 case "taptap":
-                    EffectSource.volume = volume;
-                    EffectSource.PlayOneShot(taptap_pop);
+                    TaptapSource.volume = volume;
+                    TaptapSource.pitch += 0.025f;
+                    TaptapSource.PlayOneShot(taptap_pop);
                     break;
 
                 case "popper":
@@ -102,6 +114,12 @@ public class SoundManager : MonoBehaviour
                 case "failed":
                     LevelStatusSource.volume = volume;
                     LevelStatusSource.PlayOneShot(levelFailed);
+                    break;
+
+                case "ching":
+                    EffectSource.pitch = 1f;
+                    EffectSource.volume = volume;
+                    EffectSource.PlayOneShot(cha_ching);
                     break;
                 default:
                     break;
@@ -192,18 +210,46 @@ public class SoundManager : MonoBehaviour
         PlaySoundFX("collect", 1f);
     }
 
+    public void PlayChaChingSoundFX()
+    {
+        PlaySoundFX("ching", 1f);
+    }
+
     public void MuteEffectSource()
     {
         EffectSource.volume = 0f;
+    }
+
+    public void ResetTaptapPitch()
+    {
+        TaptapSource.pitch = 1f;
     }
     #endregion
 
     #region Music Sound Functions
     public void ChangeVolume_Music(float _val)
     {
-        if (_val >= 0)
+        if (!setData.Toggle_Music)
         {
-            MusicSource.DOFade(_val, .25f);
+            return;
+        }
+        else
+        {
+            if (_val >= 0f)
+            {
+                MusicSource.DOFade(_val, .25f);
+            }
+        }
+    }
+
+    void CheckMusicSound(Scene current, Scene next)
+    {
+        if (current.buildIndex == 0)
+        {
+            if (!setData.Toggle_Music)
+            {
+                ChangeVolume_Music(0f);
+            }
         }
     }
     #endregion

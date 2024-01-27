@@ -6,6 +6,7 @@ TagManager:
   tags:
   - coinText
   - gemText
+  - taptap
   layers:
   - Default
   - TransparentFX

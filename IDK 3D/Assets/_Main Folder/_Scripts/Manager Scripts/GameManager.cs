@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.activeSceneChanged += SpawnChosenMissile_Assign;
+
         if (GameData != null)
         {
             int lastLevel = GameData.GetGameLevel();
@@ -110,5 +113,23 @@ public class GameManager : MonoBehaviour
     public int GetMultiplierValue()
     {
         return TapTap_Multiplier;
+    }
+
+    void SpawnChosenMissile_Assign(Scene current, Scene next)
+    {
+        if (next.buildIndex > 0 && GameData.GetCurrentMissileObject() != null)
+        {
+            if (!GameObject.FindGameObjectWithTag("Player"))
+            {
+                GameObject _obj = Instantiate(GameData.GetCurrentMissileObject(), new Vector3(0f, 5.5f, 0f), Quaternion.identity, null);
+                GameObject playerOBJ = GameObject.FindGameObjectWithTag("Player");
+                ParticleSystem _particle = Instantiate(GameData.GetUpMissileFX(),
+                    new Vector3(0f, 1.8f, 0f),
+                    Quaternion.identity,
+                    playerOBJ.transform);
+                playerOBJ.GetComponent<PlayerMissile_Move>().AssingUpParticleFX(_particle);
+            }
+            
+        }
     }
 }

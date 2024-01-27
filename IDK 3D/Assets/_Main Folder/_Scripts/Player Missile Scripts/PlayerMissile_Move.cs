@@ -38,10 +38,12 @@ public class PlayerMissile_Move : MonoBehaviour
 
     private void Start()
     {
+        MainCamera = Camera.main;
         // Event Subscribtions
         onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
         onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
 
+        // Sound
         SoundManager.instance.OpenRocketSoundVolume();
         SoundManager.instance.MuteEffectSource();
 
@@ -155,6 +157,16 @@ public class PlayerMissile_Move : MonoBehaviour
         rb.isKinematic = true;
         missileSpeed = 0f;
         rotationSpeed = 0f;
+    }
+
+    public void AssingUpParticleFX(ParticleSystem particle)
+    {
+        if (particle != null)
+        {
+            MissileUp_FX = particle;
+            MissileUp_FX.Stop();
+        }
+        else return;
     }
 
     private void OnDisable()

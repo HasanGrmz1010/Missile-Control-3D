@@ -11,6 +11,9 @@ public class GameData_SO : ScriptableObject
     [SerializeField] private int TOTAL_COIN;
     [SerializeField] private int GEMS;
 
+    [SerializeField] GameObject missileObject;
+    [SerializeField] ParticleSystem upMissileFX;
+
     public int GetGameLevel() { return GAME_LEVEL; }
     public void IncreaseGameLevel() { GAME_LEVEL++; }
 
@@ -29,4 +32,29 @@ public class GameData_SO : ScriptableObject
     public void IncreaseGems(int _val) { if (_val > 0) GEMS += _val; }
     public void DecreaseGems(int _val) { if (_val > 0 && (GEMS - _val) >= 0) GEMS -= _val; }
     public int GetGemsValue() { return GEMS; }
+
+    public GameObject GetCurrentMissileObject()
+    {
+        if (missileObject != null)
+            return missileObject;
+        else return null;
+    }
+
+    public void SetCurrentMissileObject(GameObject _val)
+    {
+        if (_val != null) missileObject = _val;
+    }
+
+    public ParticleSystem GetUpMissileFX()
+    {
+        return upMissileFX;
+        //if (upMissileFX != null) return upMissileFX;
+        //else return null;
+    }
+
+    public void SetUpMissileFX(ParticleSystem fx)
+    {
+        if (fx != null) upMissileFX = fx;
+    }
+
 }

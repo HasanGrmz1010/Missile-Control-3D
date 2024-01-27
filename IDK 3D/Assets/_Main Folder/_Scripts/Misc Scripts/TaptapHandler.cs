@@ -17,6 +17,7 @@ public class TaptapHandler : MonoBehaviour
     int multiplier = 0;
 
     bool indicator_active;
+    bool final_stage;
 
     private void Start()
     {
@@ -26,30 +27,33 @@ public class TaptapHandler : MonoBehaviour
 
     private void Update()
     {
-        taptapObj.anchoredPosition += new Vector2(-100f, 0f) * Time.deltaTime;
-        Tap_Value = taptapObj.anchoredPosition.x;
-        if (Input.touchCount > 0)
+        if (final_stage)
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Ended)
+            taptapObj.anchoredPosition += new Vector2(-100f, 0f) * Time.deltaTime;
+            Tap_Value = taptapObj.anchoredPosition.x;
+            if (Input.touchCount > 0)
             {
-                TapTimerIndicator.DOPunchScale(Vector2.one / 6, .05f);
-                SoundManager.instance.PlayTapTapFX();
-                taptapObj.anchoredPosition = new Vector2(taptapObj.anchoredPosition.x + 25f, taptapObj.anchoredPosition.y);
-            }
-        }
+                Touch touch = Input.GetTouch(0);
 
-        if (Tap_Value <= -400f && indicator_active)
-        {
-            p_col.HandlePlayerExploded();
-            SoundManager.instance.ExplodeSoundFX();
-            Deactivate_TapTapIndicator();
-        }
-        if (Tap_Value >= 400f && indicator_active)
-        {
-            UI_Manager.instance.TapTapPlusCoin_HandleUI();
-            Deactivate_TapTapIndicator();
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    TapTimerIndicator.DOPunchScale(Vector2.one / 6, .05f);
+                    SoundManager.instance.PlayTapTapFX();
+                    taptapObj.anchoredPosition = new Vector2(taptapObj.anchoredPosition.x + 25f, taptapObj.anchoredPosition.y);
+                }
+            }
+
+            if (Tap_Value <= -400f && indicator_active)
+            {
+                p_col.HandlePlayerExploded();
+                SoundManager.instance.ExplodeSoundFX();
+                Deactivate_TapTapIndicator();
+            }
+            if (Tap_Value >= 400f && indicator_active)
+            {
+                UI_Manager.instance.TapTapPlusCoin_HandleUI();
+                Deactivate_TapTapIndicator();
+            }
         }
     }
 
@@ -66,5 +70,11 @@ public class TaptapHandler : MonoBehaviour
         {
             TapTimerIndicator.gameObject.SetActive(false);
         });
+    }
+
+    public void ChangeFinalStatus()
+    {
+        if (final_stage) final_stage = false;
+        else if (!final_stage) final_stage = true;
     }
 }
