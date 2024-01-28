@@ -12,3 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315e79c2e21fd6e4e829fc0080f8ff0f, type: 3}
   m_Name: StoreData
   m_EditorClassIdentifier: 
+  Cards:
+  - {fileID: 1410640030161564697, guid: 9c7211e01216ec343a547b4f4d867fb4, type: 3}
+  - {fileID: 6696857941118105593, guid: ad2ba2993359af6428a596fc68ce35f2, type: 3}
+  - {fileID: 990711550917782010, guid: eabeb71934cff2741892d472306c0a4c, type: 3}
+  - {fileID: 1621959245627283555, guid: 4d2c65f3731744043bf414ca1c3f7c44, type: 3}
+  - {fileID: 1027945127441300546, guid: d8bf571ed1383ac40b1e36ce54bce274, type: 3}
+  - {fileID: 128962821702375940, guid: b5df092aa0a972541beb3f865d8201d7, type: 3}
+  - {fileID: 1965801929244125320, guid: 5c644da5aa8876c4199eb88537ee9c90, type: 3}

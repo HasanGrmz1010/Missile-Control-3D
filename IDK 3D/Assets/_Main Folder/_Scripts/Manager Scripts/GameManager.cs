@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.activeSceneChanged += SpawnChosenMissile_Assign;
+        SceneManager.activeSceneChanged += onSceneChanged;
 
         if (GameData != null)
         {
@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
         return TapTap_Multiplier;
     }
 
-    void SpawnChosenMissile_Assign(Scene current, Scene next)
+    void onSceneChanged(Scene current, Scene next)
     {
         if (next.buildIndex > 0 && GameData.GetCurrentMissileObject() != null)
         {
@@ -129,7 +129,11 @@ public class GameManager : MonoBehaviour
                     playerOBJ.transform);
                 playerOBJ.GetComponent<PlayerMissile_Move>().AssingUpParticleFX(_particle);
             }
-            
+        }
+
+        else if (next.buildIndex == 0)
+        {
+
         }
     }
 }

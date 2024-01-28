@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StoreItem : MonoBehaviour
@@ -14,6 +15,7 @@ public class StoreItem : MonoBehaviour
 
     [SerializeField] int COST;
     [SerializeField] GameData_SO game_data;
+    [SerializeField] StoreData_SO store_data;
 
     [SerializeField] GameObject this_missile_obj;
     [SerializeField] ParticleSystem this_particle_obj;
@@ -27,9 +29,15 @@ public class StoreItem : MonoBehaviour
 
     private void Start()
     {
+        if (store_data.ContainsPurchasedItem(this.gameObject))
+        {
+            UI_ChangeToBought();
+        }
+
         if (COST == 0) costText.text = "FREE";
         else costText.text = COST.ToString();
 
+        // Button Subscribtions
         Buy_Button.onClick.AddListener(Purchase_Item);
         Select_Button.onClick.AddListener(SelectItem);
     }
@@ -40,12 +48,10 @@ public class StoreItem : MonoBehaviour
         {
             if (game_data.GetTotalCoinValue() >= COST)
             {
-                Buy_Button.gameObject.SetActive(false);
-                Select_Button.gameObject.SetActive(true);
-                Lock_img.gameObject.SetActive(false);
-                Locked_Fade_img.gameObject.SetActive(false);
+                UI_ChangeToBought();
 
                 StoreManager.instance.AddMissileTo_PurchasedList(this_missile_obj);
+                store_data.AddItem_toList(this.gameObject);
 
                 game_data.DecreaseTotalCoin(COST);
                 EconomyManager.instance.UpdateCoinValueText();
@@ -62,12 +68,10 @@ public class StoreItem : MonoBehaviour
         {
             if (game_data.GetTotalCoinValue() >= COST)
             {
-                Buy_Button.gameObject.SetActive(false);
-                Select_Button.gameObject.SetActive(true);
-                Lock_img.gameObject.SetActive(false);
-                Locked_Fade_img.gameObject.SetActive(false);
+                UI_ChangeToBought();
 
                 StoreManager.instance.AddParticleTo_PurchasedList(this_particle_obj);
+                store_data.AddItem_toList(this.gameObject);
 
                 game_data.DecreaseTotalCoin(COST);
                 EconomyManager.instance.UpdateCoinValueText();
@@ -91,5 +95,13 @@ public class StoreItem : MonoBehaviour
         {
             StoreManager.instance.ChooseSelectedParticle(this_particle_obj);
         }
+    }
+
+    void UI_ChangeToBought()
+    {
+        Buy_Button.gameObject.SetActive(false);
+        Select_Button.gameObject.SetActive(true);
+        Lock_img.gameObject.SetActive(false);
+        Locked_Fade_img.gameObject.SetActive(false);
     }
 }
