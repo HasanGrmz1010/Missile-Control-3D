@@ -43,7 +43,7 @@ public class MainMenuTabHandler : MonoBehaviour
         MainMenuPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc);
         StorePanel.DOLocalMoveX(-1080f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
         {
-            StorePanel.gameObject.SetActive(false);
+            //StorePanel.gameObject.SetActive(false);
             //StorePanel.anchoredPosition = new Vector2(-1080f, 0f);
         });
     }
@@ -55,7 +55,7 @@ public class MainMenuTabHandler : MonoBehaviour
         SettingsPanel.gameObject.SetActive(true);
         SettingsPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
         {
-            MainMenuPanel.gameObject.SetActive(false);
+            //MainMenuPanel.gameObject.SetActive(false);
             //MainMenuPanel.anchoredPosition = new Vector2(-1080f, .5f);
         });
     }
@@ -67,7 +67,7 @@ public class MainMenuTabHandler : MonoBehaviour
         MainMenuPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc);
         SettingsPanel.DOLocalMoveX(1080f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
         {
-            SettingsPanel.gameObject.SetActive(false);
+            //SettingsPanel.gameObject.SetActive(false);
             //StorePanel.anchoredPosition = new Vector2(-1080f, 0f);
         });
     }

@@ -17,11 +17,17 @@ public class StoreManager : MonoBehaviour
     #endregion
 
     [SerializeField] GameData_SO game_data;
+    [SerializeField] StoreData_SO store_data;
 
     [SerializeField] GameObject SelectedMissile_Object;
     [SerializeField] ParticleSystem SelectedParticle_Object;
     List<GameObject> purchasedMissiles = new List<GameObject>();
     List<ParticleSystem> purchasedParticles = new List<ParticleSystem>();
+
+    private void Start()
+    {
+        //store_data.ResetPurchasedList();
+    }
 
     public void AddMissileTo_PurchasedList(GameObject _missile)
     {
