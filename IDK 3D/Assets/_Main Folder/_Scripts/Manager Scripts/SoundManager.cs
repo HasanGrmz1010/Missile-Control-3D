@@ -43,6 +43,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip fuelSound;
     [SerializeField] AudioClip fuelBlastSound;
     [SerializeField] AudioClip buttonPressed;
+    [SerializeField] AudioClip buttonAlternative;
     [SerializeField] AudioClip popper;
     [SerializeField] AudioClip coinCollected;
     [SerializeField] AudioClip taptap_pop;
@@ -58,7 +59,7 @@ public class SoundManager : MonoBehaviour
         MusicSource.Play();
     }
 
-    void PlaySoundFX(string clip, float volume)
+    public void PlaySoundFX(string clip, float volume)
     {
         if (clip != null)
         {
@@ -86,6 +87,12 @@ public class SoundManager : MonoBehaviour
                     EffectSource.pitch = .9f;
                     EffectSource.volume = volume;
                     EffectSource.PlayOneShot(buttonPressed);
+                    break;
+
+                case "button_a":
+                    EffectSource.pitch = 1f;
+                    EffectSource.volume = volume;
+                    EffectSource.PlayOneShot(buttonAlternative);
                     break;
 
                 case "collect":
@@ -179,42 +186,6 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region Effect Sound Functions
-    public void PlayTapTapFX()
-    {
-        PlaySoundFX("taptap", 1f);
-    }
-
-    public void PlayPopperFX()
-    {
-        PlaySoundFX("popper", .05f);
-    }
-
-    public void PlayButtonPressedFX()
-    {
-        PlaySoundFX("button", .3f);
-    }
-
-    public void PlayCoinSoundFX()
-    {
-        PlaySoundFX("coin", .5f);
-    }
-
-    public void PlayFuelSoundFX()
-    {
-        PlaySoundFX("fuel", 1f);
-        PlaySoundFX("fuel_blast", .1f);
-    }
-
-    public void PlayCollectedSoundFX()
-    {
-        PlaySoundFX("collect", 1f);
-    }
-
-    public void PlayChaChingSoundFX()
-    {
-        PlaySoundFX("ching", 1f);
-    }
-
     public void MuteEffectSource()
     {
         EffectSource.volume = 0f;

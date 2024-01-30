@@ -16,6 +16,7 @@ public class GameData_SO : ScriptableObject
 
     public int GetGameLevel() { return GAME_LEVEL; }
     public void IncreaseGameLevel() { GAME_LEVEL++; }
+    public void DecreaseGameLevel() { GAME_LEVEL--; }
 
     public int GetHighScore() { return HIGH_SCORE; }
     public void ChangeHighScore(int _val)

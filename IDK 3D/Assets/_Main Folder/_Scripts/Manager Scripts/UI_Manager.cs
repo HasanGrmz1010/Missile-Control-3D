@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -53,6 +54,11 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Color LevelWin_Color;
     [SerializeField] Color LevelLose_Color;
     [SerializeField] Color NoAlphaText_Color;
+
+    private void Start()
+    {
+        Level_Text.text = "Level " + SceneManager.GetActiveScene().buildIndex.ToString();
+    }
 
     #region Game Over & Level Passed Handling Functions
     public void Handle_Fuel_GameOverScreen()
@@ -168,6 +174,7 @@ public class UI_Manager : MonoBehaviour
                 PauseMenuPanel.DOFade(1f, .25f);
                 PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
                 StartLevelButton.gameObject.SetActive(false);
+                Level_Text.gameObject.SetActive(false);
                 break;
 
             case "close":
@@ -177,6 +184,7 @@ public class UI_Manager : MonoBehaviour
                 {
                     PauseMenuPanel.rectTransform.anchoredPosition = new Vector2(-1400f, 0f);
                     PauseMenuPanel.gameObject.SetActive(false);
+                    Level_Text.gameObject.SetActive(true);
                 });
                 StartLevelButton.gameObject.SetActive(true);
                 break;

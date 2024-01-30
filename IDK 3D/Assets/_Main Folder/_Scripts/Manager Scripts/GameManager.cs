@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     int TapTap_Multiplier;
+    public int levelPlayed = 1;
 
     [Header("_____________ GAME DATA _____________")]
     [SerializeField] GameData_SO GameData;
@@ -129,11 +130,6 @@ public class GameManager : MonoBehaviour
                     playerOBJ.transform);
                 playerOBJ.GetComponent<PlayerMissile_Move>().AssingUpParticleFX(_particle);
             }
-        }
-
-        else if (next.buildIndex == 0)
-        {
-
         }
     }
 }
