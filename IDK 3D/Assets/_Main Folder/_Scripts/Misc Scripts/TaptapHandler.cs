@@ -38,7 +38,7 @@ public class TaptapHandler : MonoBehaviour
                 if (touch.phase == TouchPhase.Ended)
                 {
                     TapTimerIndicator.DOPunchScale(Vector2.one / 6, .05f);
-                    SoundManager.instance.PlayTapTapFX();
+                    SoundManager.instance.PlaySoundFX("taptap", 1f);
                     taptapObj.anchoredPosition = new Vector2(taptapObj.anchoredPosition.x + 25f, taptapObj.anchoredPosition.y);
                 }
             }

@@ -55,7 +55,7 @@ public class StoreItem : MonoBehaviour
 
                 game_data.DecreaseTotalCoin(COST);
                 EconomyManager.instance.UpdateCoinValueText();
-                SoundManager.instance.PlayChaChingSoundFX();
+                SoundManager.instance.PlaySoundFX("ching", 1f);
             }
 
             else
@@ -75,7 +75,7 @@ public class StoreItem : MonoBehaviour
 
                 game_data.DecreaseTotalCoin(COST);
                 EconomyManager.instance.UpdateCoinValueText();
-                SoundManager.instance.PlayChaChingSoundFX();
+                SoundManager.instance.PlaySoundFX("ching", 1f);
             }
 
             else

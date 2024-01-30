@@ -7,6 +7,7 @@ TagManager:
   - coinText
   - gemText
   - taptap
+  - reward_AD
   layers:
   - Default
   - TransparentFX

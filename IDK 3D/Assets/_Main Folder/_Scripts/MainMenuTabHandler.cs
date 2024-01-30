@@ -26,7 +26,7 @@ public class MainMenuTabHandler : MonoBehaviour
 
     void OpenStorePanel()
     {
-        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.PlaySoundFX("button_a", 1f);
         MainMenuPanel.DOLocalMoveX(1080f, .5f).SetEase(Ease.OutCirc);
         StorePanel.gameObject.SetActive(true);
         StorePanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
@@ -38,7 +38,7 @@ public class MainMenuTabHandler : MonoBehaviour
 
     void CloseStorePanel()
     {
-        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.PlaySoundFX("button", 1f);
         MainMenuPanel.gameObject.SetActive(true);
         MainMenuPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc);
         StorePanel.DOLocalMoveX(-1080f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
@@ -50,7 +50,7 @@ public class MainMenuTabHandler : MonoBehaviour
 
     void OpenSettingsPanel()
     {
-        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.PlaySoundFX("button", 1f);
         MainMenuPanel.DOLocalMoveX(-1080f, .5f).SetEase(Ease.OutCirc);
         SettingsPanel.gameObject.SetActive(true);
         SettingsPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>
@@ -62,7 +62,7 @@ public class MainMenuTabHandler : MonoBehaviour
 
     void CloseSettingsPanel()
     {
-        SoundManager.instance.PlayButtonPressedFX();
+        SoundManager.instance.PlaySoundFX("button_a", 1f);
         MainMenuPanel.gameObject.SetActive(true);
         MainMenuPanel.DOLocalMoveX(0f, .5f).SetEase(Ease.OutCirc);
         SettingsPanel.DOLocalMoveX(1080f, .5f).SetEase(Ease.OutCirc).OnComplete(() =>

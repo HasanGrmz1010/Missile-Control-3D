@@ -14,7 +14,7 @@ public class PunchCube : MonoBehaviour
     {
         if (other.gameObject.layer == 3)// Player Missile
         {
-            SoundManager.instance.PlayPopperFX();
+            SoundManager.instance.PlaySoundFX("popper", .5f);
             punchFX.gameObject.SetActive(true);
             punchFX.Play();
             for (int i = 0; i < cubes.Count; i++)
