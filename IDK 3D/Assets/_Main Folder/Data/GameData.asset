@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d2431fd2fb4254b9da27ab961062b5, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  GAME_LEVEL: 1
-  HIGH_SCORE: 0
-  TOTAL_COIN: 100
+  GAME_LEVEL: 5
+  HIGH_SCORE: 640
+  TOTAL_COIN: 2034
   GEMS: 5
-  missileObject: {fileID: 3421412415591537247, guid: bdbcd90ddd96d024288c63200e546eca,
+  missileObject: {fileID: 8972942313199816299, guid: 1c4f2094852ced046a768ec39d57f9d6,
     type: 3}
-  upMissileFX: {fileID: 56852242586695117, guid: f8342ab71f127124a85d9dcdacba537d,
+  upMissileFX: {fileID: 56852242586695117, guid: f38e30210829b5b4291795ae9759c37a,
     type: 3}
