@@ -65,8 +65,17 @@ public class PlayerMissile_Move : MonoBehaviour
             return;
         }
 
+        // Use touch on devices and the mouse in the Unity editor or desktop builds.
+        bool hasTouch = Input.touchCount > 0;
+        TouchPhase touchPhase = hasTouch ? Input.GetTouch(0).phase : TouchPhase.Stationary;
+        bool inputBegan = hasTouch ? touchPhase == TouchPhase.Began : Input.GetMouseButtonDown(0);
+        bool inputEnded = hasTouch
+            ? touchPhase == TouchPhase.Ended || touchPhase == TouchPhase.Canceled
+            : Input.GetMouseButtonUp(0);
+        bool inputHeld = hasTouch || Input.GetMouseButton(0);
+
         // Release can be missed when a touch is interrupted by the OS.
-        if (Input.touchCount == 0)
+        if (inputEnded || !inputHeld)
         {
             if (isBoosting)
             {
@@ -76,23 +85,12 @@ public class PlayerMissile_Move : MonoBehaviour
             return;
         }
 
-        Touch touch = Input.GetTouch(0);
         if (GameManager.instance.gameState == GameManager.GameState.startPhase)
         {
             GameManager.instance.gameState = GameManager.GameState.playing;
         }
 
-        if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-        {
-            if (isBoosting)
-            {
-                StopRocketFunctions();
-                SoundManager.instance.PlayRocketSoundFX_Fall();
-            }
-            return;
-        }
-
-        if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
+        if (inputBegan && FuelManager.instance.hasFuel())
         {
             StartRocketFunctions();
             SoundManager.instance.PlayRocketSoundFX_Boost();
