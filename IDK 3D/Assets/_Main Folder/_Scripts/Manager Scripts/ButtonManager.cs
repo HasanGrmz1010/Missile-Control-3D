@@ -41,6 +41,7 @@ public class ButtonManager : MonoBehaviour
 
     [SerializeField] Button startLevelButton;
     bool isGamePaused;
+    GameManager.GameState stateBeforePause;
 
     private void Start()
     {
@@ -185,14 +186,23 @@ public class ButtonManager : MonoBehaviour
     #region Pause Menu Button Function
     void PauseMenu()
     {
+        if (isGamePaused) return;
+
         SoundManager.instance.PlaySoundFX("button_a", 1f);
+        stateBeforePause = GameManager.instance.gameState;
+        GameManager.instance.gameState = GameManager.GameState.paused;
         isGamePaused = true;
         UI_Manager.instance.Handle_PauseMenuScreen("open");
+        Time.timeScale = 0f;
     }
 
     void PauseMenu_Resume()
     {
+        if (!isGamePaused) return;
+
         SoundManager.instance.PlaySoundFX("button", 1f);
+        Time.timeScale = 1f;
+        GameManager.instance.gameState = stateBeforePause;
         isGamePaused = false;
         UI_Manager.instance.Handle_PauseMenuScreen("close");
     }
@@ -200,6 +210,7 @@ public class ButtonManager : MonoBehaviour
     void PauseMenu_ReturnMenu()
     {
         SoundManager.instance.PlaySoundFX("button_a", 1f);
+        Time.timeScale = 1f;
         SoundManager.instance.ChangeVolume_Music(.4f);
         EconomyManager.instance.ResetCoinAndScore();
         SceneManager.LoadScene(0);

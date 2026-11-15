@@ -1,10 +1,6 @@
 using DG.Tweening;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMissile_Move : MonoBehaviour
 {
@@ -15,6 +11,10 @@ public class PlayerMissile_Move : MonoBehaviour
     public bool ableToMove;
     bool hasTouched;
     bool inFinishPhase;
+    bool isBoosting;
+
+    EventManager fuelEventManager;
+    CameraMovement cameraMovement;
 
     Rigidbody rb;
     Quaternion moveRotation;
@@ -40,14 +40,16 @@ public class PlayerMissile_Move : MonoBehaviour
     {
         MainCamera = Camera.main;
         // Event Subscribtions
-        onNoFuelLeft += EventManager.instance.HandleNoFuelLeft;
-        onNoFuelLeft += MainCamera.transform.GetComponent<CameraMovement>().onPlayerEliminated;
+        fuelEventManager = EventManager.instance;
+        cameraMovement = MainCamera.GetComponent<CameraMovement>();
+        onNoFuelLeft += fuelEventManager.HandleNoFuelLeft;
+        onNoFuelLeft += cameraMovement.onPlayerEliminated;
 
         // Sound
         SoundManager.instance.OpenRocketSoundVolume();
         SoundManager.instance.MuteEffectSource();
 
-        ableToMove = false; hasTouched = false; inFinishPhase = false;
+        ableToMove = false; hasTouched = false; inFinishPhase = false; isBoosting = false;
         rb = GetComponent<Rigidbody>();
 
     }
@@ -56,49 +58,63 @@ public class PlayerMissile_Move : MonoBehaviour
     {
         HandleMovement();
 
-        if (!inFinishPhase)
+        if (inFinishPhase || !ableToMove ||
+            GameManager.instance.playerState != GameManager.PlayerState.ableToPlay ||
+            GameManager.instance.gameState == GameManager.GameState.paused)
         {
-            if (Input.touchCount > 0 && GameManager.instance.playerState != GameManager.PlayerState.eliminated && ableToMove)
+            return;
+        }
+
+        // Release can be missed when a touch is interrupted by the OS.
+        if (Input.touchCount == 0)
+        {
+            if (isBoosting)
             {
-                Touch touch = Input.GetTouch(0);
+                StopRocketFunctions();
+                SoundManager.instance.PlayRocketSoundFX_Fall();
+            }
+            return;
+        }
 
-                if (GameManager.instance.gameState != GameManager.GameState.endPhase)
-                {
-                    FuelManager.instance.SpendFuel(fuelSpendValue);
-                }
+        Touch touch = Input.GetTouch(0);
+        if (GameManager.instance.gameState == GameManager.GameState.startPhase)
+        {
+            GameManager.instance.gameState = GameManager.GameState.playing;
+        }
 
-                if (GameManager.instance.gameState == GameManager.GameState.startPhase)
-                {
-                    GameManager.instance.gameState = GameManager.GameState.playing;
-                }
+        if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+        {
+            if (isBoosting)
+            {
+                StopRocketFunctions();
+                SoundManager.instance.PlayRocketSoundFX_Fall();
+            }
+            return;
+        }
 
-                // -------------- Rocket Functions & Handling Fuel --------------
+        if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
+        {
+            StartRocketFunctions();
+            SoundManager.instance.PlayRocketSoundFX_Boost();
+        }
 
-                if (touch.phase == TouchPhase.Began && FuelManager.instance.hasFuel())
-                {
-                    StartRocketFunctions();
-                    SoundManager.instance.PlayRocketSoundFX_Boost();
-                }
-
-                else if (touch.phase == TouchPhase.Ended)
-                {
-                    StopRocketFunctions();
-                    SoundManager.instance.PlayRocketSoundFX_Fall();
-                }
-
-                else if (!FuelManager.instance.hasFuel() && ableToMove)
-                {
-                    StopRocketFunctions();
-                    onNoFuelLeft?.Invoke();
-                    ableToMove = false;
-                }
+        if (isBoosting)
+        {
+            // Prefabs store the original per-frame value; 60 Hz preserves their tuning.
+            FuelManager.instance.SpendFuel(fuelSpendValue * 60f * Time.deltaTime);
+            if (!FuelManager.instance.hasFuel())
+            {
+                StopRocketFunctions();
+                ableToMove = false;
+                onNoFuelLeft?.Invoke();
             }
         }
     }
 
     void HandleMovement()
     {
-        if (hasTouched)
+        if (hasTouched && GameManager.instance.gameState != GameManager.GameState.paused &&
+            GameManager.instance.playerState == GameManager.PlayerState.ableToPlay)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, rotationSpeed * Time.deltaTime);
             transform.position += MoveVec * missileSpeed * Time.deltaTime;
@@ -115,6 +131,7 @@ public class PlayerMissile_Move : MonoBehaviour
         MoveVec = new Vector3(1f, 0f, 0f);
 
         inFinishPhase = true;
+        isBoosting = false;
 
         MissileUp_FX.Play();
         IdleSmoke_FX.Stop();
@@ -133,6 +150,7 @@ public class PlayerMissile_Move : MonoBehaviour
             IdleSmoke_FX.Stop();
 
             hasTouched = true;
+            isBoosting = true;
             rb.isKinematic = false;
             moveRotation = Quaternion.Euler(0, 0, upAngle);
             MoveVec = new Vector3(1f, 1f, 0);
@@ -145,6 +163,7 @@ public class PlayerMissile_Move : MonoBehaviour
         {
             MissileUp_FX.Stop();
             IdleSmoke_FX.Play();
+            isBoosting = false;
 
             MoveVec = new Vector3(1f, -.75f, 0);
             moveRotation = Quaternion.Euler(0, 0, downAngle);
@@ -171,6 +190,9 @@ public class PlayerMissile_Move : MonoBehaviour
 
     private void OnDisable()
     {
-        onNoFuelLeft -= EventManager.instance.HandleNoFuelLeft;
+        if (fuelEventManager != null)
+            onNoFuelLeft -= fuelEventManager.HandleNoFuelLeft;
+        if (cameraMovement != null)
+            onNoFuelLeft -= cameraMovement.onPlayerEliminated;
     }
 }

@@ -39,7 +39,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 break;
 
             case 10:// finish line
-                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+                if (GameManager.instance.playerState == GameManager.PlayerState.ableToPlay &&
+                    GameManager.instance.gameState != GameManager.GameState.endPhase)
                 {
                     taptap.ChangeFinalStatus();
                     SoundManager.instance.FinalStageSoundFX();
@@ -57,7 +58,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 break;
 
             case 11:// target line
-                if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
+                if (GameManager.instance.playerState == GameManager.PlayerState.ableToPlay &&
+                    GameManager.instance.gameState == GameManager.GameState.endPhase)
                 {
                     taptap.ChangeFinalStatus();
                     SoundManager.instance.FinalTargetSoundFX();
@@ -86,6 +88,8 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
                 break;
 
             case 12:// last target
+                if (GameManager.instance.playerState != GameManager.PlayerState.ableToPlay)
+                    break;
                 Time.timeScale = .5f;
                 DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
 
@@ -111,6 +115,10 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
 
     public void HandlePlayerExploded()
     {
+        if (GameManager.instance.playerState != GameManager.PlayerState.ableToPlay)
+            return;
+
+        GameManager.instance.playerState = GameManager.PlayerState.eliminated;
         Time.timeScale = .5f;
         DOTween.To(() => p_move.MainCamera.fieldOfView, set => p_move.MainCamera.fieldOfView = set, 50f, 1f).SetEase(Ease.OutQuad);
         p_move.MainCamera.GetComponent<CameraMovement>().onPlayerEliminated();
@@ -119,10 +127,6 @@ public class PlayerMissile_CollideHandler : MonoBehaviour
         transform.gameObject.SetActive(false);
         GameManager.instance.CreateAndPlayFX("explode", transform.position, Quaternion.identity);
 
-        if (GameManager.instance.playerState != GameManager.PlayerState.eliminated)
-        {
-            UI_Manager.instance.Handle_Explode_GameOverScreen();
-            GameManager.instance.playerState = GameManager.PlayerState.eliminated;
-        }
+        UI_Manager.instance.Handle_Explode_GameOverScreen();
     }
 }

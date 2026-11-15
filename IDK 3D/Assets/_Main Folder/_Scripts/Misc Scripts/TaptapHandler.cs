@@ -27,7 +27,7 @@ public class TaptapHandler : MonoBehaviour
 
     private void Update()
     {
-        if (final_stage)
+        if (final_stage && GameManager.instance.gameState != GameManager.GameState.paused)
         {
             taptapObj.anchoredPosition += new Vector2(-100f, 0f) * Time.deltaTime;
             Tap_Value = taptapObj.anchoredPosition.x;
@@ -66,6 +66,7 @@ public class TaptapHandler : MonoBehaviour
     void Deactivate_TapTapIndicator()
     {
         indicator_active = false;
+        final_stage = false;
         TapTimerIndicator.DOScale(.01f, .1f).SetEase(Ease.InOutBounce).OnComplete(() =>
         {
             TapTimerIndicator.gameObject.SetActive(false);
@@ -74,7 +75,7 @@ public class TaptapHandler : MonoBehaviour
 
     public void ChangeFinalStatus()
     {
-        if (final_stage) final_stage = false;
-        else if (!final_stage) final_stage = true;
+        // Both the finish and target triggers call this method.
+        final_stage = indicator_active;
     }
 }

@@ -171,8 +171,8 @@ public class UI_Manager : MonoBehaviour
             case "open":
                 SoundManager.instance.ChangeVolume_Music(.02f);
                 PauseMenuPanel.gameObject.SetActive(true);
-                PauseMenuPanel.DOFade(1f, .25f);
-                PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack);
+                PauseMenuPanel.DOFade(1f, .25f).SetUpdate(true);
+                PauseMenuPanel.rectTransform.DOLocalMoveX(0f, .25f).SetEase(Ease.OutBack).SetUpdate(true);
                 StartLevelButton.gameObject.SetActive(false);
                 Level_Text.gameObject.SetActive(false);
                 break;

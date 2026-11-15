@@ -71,7 +71,8 @@ public class EconomyManager : MonoBehaviour
     {
         if (_val > 0)
         {
-            gameData.IncreaseTotalCoin(levelCoin);
+            gameData.IncreaseTotalCoin(_val);
+            mainCoin = gameData.GetTotalCoinValue();
         }
     }
 
@@ -80,6 +81,7 @@ public class EconomyManager : MonoBehaviour
         if (_val > 0 && (mainCoin - _val) >= 0)
         {
             gameData.DecreaseTotalCoin(_val);
+            mainCoin = gameData.GetTotalCoinValue();
         }
     }
 
